@@ -1,0 +1,140 @@
+# Copyright 2014-2018 CERN for the benefit of the ATLAS collaboration.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Authors:
+# - Thomas Beermann, <thomas.beermann@cern.ch>, 2018
+
+version: "2"
+services:
+  rucio-client:
+      build:
+        context: ./rucio-client
+        dockerfile: Dockerfile
+      image: slidspitfire/rucio-client:latest
+      container_name: rucio-client
+      hostname: rucio-client
+      depends_on:
+        - "rucio-server"
+        - "rucio-db-pool"
+      networks:
+      - rucionetwork
+      tty: true
+      
+  rucio-ui:
+    build:
+      context: ./rucio-ui
+      dockerfile: Dockerfile
+    image: slidspitfire/rucio-ui:latest
+    container_name: rucio-ui
+    hostname: rucio-ui
+    ports:
+      - "443:443"
+    depends_on:
+      - "rucio-db-pool"
+    networks:
+      - rucionetwork
+    command: ["httpd", "-D", "FOREGROUND"]
+
+  rucio-server:
+    build:
+      context: ./rucio-server
+      dockerfile: Dockerfile
+    image: slidspitfire/rucio-server:latest
+    container_name: rucio-server
+    hostname: rucio-server
+    ports:
+      - "9443:443"
+    networks:
+      - rucionetwork
+    extra_hosts:
+      - "rucio-db-pool:172.24.0.17"
+    depends_on:
+      - "rucio-db-pool"
+    command: ["httpd", "-D", "FOREGROUND"]
+
+  rucio-db-pool:
+    build:
+      context: ./rucio-pgpool
+      dockerfile: Dockerfile
+    image: slidspitfire/rucio-db-pool:latest
+    container_name: rucio-db-pool
+    hostname: rucio-db-pool
+    ports:
+      - "5432:5433"
+    networks:
+      rucionetwork:
+        ipv4_address: 172.24.0.17
+    extra_hosts:
+      - "rucio-db:172.24.0.9"
+      - "rucio-db-streamer:172.24.0.7"
+      - "rucio-server:172.24.0.3"
+    depends_on:
+      - "rucio-db"
+      - "rucio-db-streamer"
+    # tty: true
+
+  rucio-db:
+    build:
+      context: ./rucio-db-master
+      dockerfile: Dockerfile
+    image: slidspitfire/rucio-db-master:latest
+    container_name: rucio-db
+    hostname: rucio-db
+    # ports:
+    #   - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pippo123
+    networks:
+      rucionetwork:
+        ipv4_address: 172.24.0.9
+    extra_hosts:
+      - "rucio-db-pool:172.24.0.17"
+
+  rucio-db-streamer:
+    build:
+      context: ./rucio-db-master
+      dockerfile: Dockerfile
+    image: slidspitfire/rucio-db-master:latest
+    container_name: rucio-db-streamer
+    hostname: rucio-db-streamer
+    # ports:
+    #   - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pippo123
+    networks:
+      rucionetwork:
+        ipv4_address: 172.24.0.7
+    extra_hosts:
+      - "rucio-db-slave:172.24.0.8"
+      - "rucio-db-pool:172.24.0.17"
+
+  rucio-db-slave:
+    build:
+      context: ./rucio-db-slave
+      dockerfile: Dockerfile
+    image: slidspitfire/rucio-db-slave:latest
+    container_name: rucio-db-slave
+    hostname: rucio-db-slave
+    # ports:
+    #   - "54320:5432"
+    networks:
+      rucionetwork:
+        ipv4_address: 172.24.0.8
+    extra_hosts:
+      - "rucio-db-streamer:172.24.0.7"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pippo123
+
+networks:
+  rucionetwork:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.24.0.0/16
+          gateway: 172.24.0.1
