@@ -4,11 +4,11 @@ services:
       build:
         context: ./cvmfs-stratum1
         dockerfile: Dockerfile
-      image: cvmfs-stratum1-latest
+      image: slidspitfire/cvmfs-stratum1-latest:latest
       container_name: cvmfs-stratum1
       hostname: cvmfs-stratum1
       depends_on:
-        - cvmfs-stratum0-latest
+        - cvmfs-stratum0
       volumes:
         - /var/cvmfs-docker/stratum1/spool:/srv/spool/cvmfs
         - /var/cvmfs-docker/stratum1/cvmfs:/srv/cvmfs
@@ -19,7 +19,7 @@ services:
       build:
         context: ./cvmfs-stratum0
         dockerfile: Dockerfile
-      image: cvmfs-stratum0-latest
+      image: slidspitfire/cvmfs-stratum0-latest:latest
       container_name: cvmfs-stratum0
       hostname: cvmfs-stratum0
       volumes:
