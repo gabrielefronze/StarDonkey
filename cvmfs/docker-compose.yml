@@ -20,6 +20,8 @@ services:
       image: slidspitfire/cvmfs-stratum1-latest:latest
       container_name: cvmfs-stratum1
       hostname: cvmfs-stratum1
+      depends_on:
+        - cvmfs-stratum0
       volumes:
         - /var/cvmfs-docker/stratum1/spool:/srv/spool/cvmfs
         - /var/cvmfs-docker/stratum1/cvmfs:/srv/cvmfs
