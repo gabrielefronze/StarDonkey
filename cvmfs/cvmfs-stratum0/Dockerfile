@@ -1,4 +1,4 @@
-FROM centos:httpd-24-centos7
+FROM centos/httpd-24-centos7
 MAINTAINER Gabriele Gaetano Fronzé "gfronze@cern.ch"
 
 USER root
