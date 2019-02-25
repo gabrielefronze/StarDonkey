@@ -9,7 +9,7 @@ RUN yum update -y && yum -y install \
     cvmfs cvmfs-server \
     man nano
 
-RUN yum install httpd && chkconfig --levels 235 httpd on && /etc/init.d/httpd start
+RUN yum install -y httpd && chkconfig --levels 235 httpd on && /etc/init.d/httpd start
 
 VOLUME /srv/spool/cvmfs
 VOLUME /srv/cvmfs
