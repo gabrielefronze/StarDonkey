@@ -5,5 +5,5 @@ USER root
 ENV USER root
 ENV HOME /root
 
-RUN cvmfs_server add-replica cvmfs-stratum0
-RUN cvmfs_server snapshot
+# RUN cvmfs_server add-replica cvmfs-stratum0
+# RUN cvmfs_server snapshot
