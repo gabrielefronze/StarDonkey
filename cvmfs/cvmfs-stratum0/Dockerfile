@@ -1,4 +1,4 @@
-FROM slidspitfire/cvmfs-stratum0-latest:latest
+FROM centos:httpd-24-centos7
 MAINTAINER Gabriele Gaetano Fronzé "gfronze@cern.ch"
 
 USER root
