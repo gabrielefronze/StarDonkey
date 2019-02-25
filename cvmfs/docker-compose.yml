@@ -8,7 +8,20 @@ services:
       container_name: cvmfs-stratum0
       hostname: cvmfs-stratum0
       volumes:
-        - /var/cvmfs-docker/spool:/srv/spool/cvmfs
-        - /var/cvmfs-docker/cvmfs:/srv/cvmfs
-        - /var/cvmfs-docker/keys:/etc/cvmfs
+        - /var/cvmfs-docker/stratum0/spool:/srv/spool/cvmfs
+        - /var/cvmfs-docker/stratum0/cvmfs:/srv/cvmfs
+        - /var/cvmfs-docker/stratum0/keys:/etc/cvmfs
+      command: ["httpd", "-D", "FOREGROUND"]
+
+    cvmfs-stratum1:
+      build:
+        context: ./cvmfs-stratum1
+        dockerfile: Dockerfile
+      image: slidspitfire/cvmfs-stratum1-latest:latest
+      container_name: cvmfs-stratum1
+      hostname: cvmfs-stratum1
+      volumes:
+        - /var/cvmfs-docker/stratum1/spool:/srv/spool/cvmfs
+        - /var/cvmfs-docker/stratum1/cvmfs:/srv/cvmfs
+        - /var/cvmfs-docker/stratum1/keys:/etc/cvmfs
       command: ["httpd", "-D", "FOREGROUND"]
