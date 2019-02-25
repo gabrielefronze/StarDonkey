@@ -11,7 +11,7 @@ RUN yum update -y && yum -y install \
 
 VOLUME /srv/spool/cvmfs
 VOLUME /srv/cvmfs
-VOLUME /etc/cvmfs/keys
+VOLUME /etc/cvmfs
 
 # this repo will be mounted on /cvmfs/virgo.sw and resides in /srv/cvmfs
 RUN cvmfs_server mkfs virgo.sw
