@@ -1,4 +1,4 @@
-FROM centos/httpd-24-centos7
+FROM scientificlinux/sl
 MAINTAINER Gabriele Gaetano Fronzé "gfronze@cern.ch"
 
 USER root
@@ -8,6 +8,8 @@ ENV HOME /root
 RUN yum update -y && yum -y install \
     cvmfs cvmfs-server \
     man nano
+
+RUN yum install httpd && chkconfig --levels 235 httpd on && /etc/init.d/httpd start
 
 VOLUME /srv/spool/cvmfs
 VOLUME /srv/cvmfs
