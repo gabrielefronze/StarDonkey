@@ -13,7 +13,7 @@ services:
         - /var/cvmfs-docker/stratum0/keys:/etc/cvmfs
       command: ["httpd", "-D", "FOREGROUND"]
 
-    cvmfs-stratum1:
+  cvmfs-stratum1:
       build:
         context: ./cvmfs-stratum1
         dockerfile: Dockerfile
