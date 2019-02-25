@@ -6,8 +6,10 @@ ENV USER root
 ENV HOME /root
 
 RUN yum update -y && yum -y install \
-    cvmfs cvmfs-server \
-    man nano
+    man nano wget
+
+RUN wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm && yum install -y cvmfs-release-latest.noarch.rpm && rm -rf cvmfs-release-latest.noarch.rpm
+RUN yum install -y cvmfs cvmfs-server
 
 RUN yum install -y httpd && chkconfig --levels 235 httpd on
 
