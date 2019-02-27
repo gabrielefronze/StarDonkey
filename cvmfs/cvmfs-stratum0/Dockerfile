@@ -13,7 +13,7 @@ RUN yum install epel-release -y && yum install -y jq
 RUN yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
 # RUN yum erase httpd httpd-tools apr apr-util
 RUN yum install -y cvmfs cvmfs-server
-RUN echo "CVMFS_HTTP_PROXY=DIRECT" >> /etc/cvmfs/default.local
+RUN echo "CVMFS_HTTP_PROXY=DIRECT" > /etc/cvmfs/default.local
 
 # this repo will be mounted on /cvmfs/virgo.sw and resides in /srv/cvmfs
 # RUN cvmfs_server mkfs virgo.sw
