@@ -11,6 +11,7 @@ RUN yum update -y && yum -y install \
 RUN yum install epel-release -y && yum install -y jq
 
 RUN yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
+RUN yum remove -y httpd-2.4.6-88.el7.centos.x86_64
 RUN yum install -y cvmfs cvmfs-server
 RUN echo "CVMFS_HTTP_PROXY=DIRECT" >> /etc/cvmfs/default.local
 
