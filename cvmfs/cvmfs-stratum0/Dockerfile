@@ -1,4 +1,4 @@
-FROM centos/httpd-24-centos7
+FROM centos:7
 MAINTAINER Gabriele Gaetano Fronzé "gfronze@cern.ch"
 
 USER root
@@ -11,7 +11,7 @@ RUN yum update -y && yum -y install \
 RUN yum install epel-release -y && yum install -y jq
 
 RUN yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
-RUN yum erase httpd httpd-tools apr apr-util
+# RUN yum erase httpd httpd-tools apr apr-util
 RUN yum install -y cvmfs cvmfs-server
 RUN echo "CVMFS_HTTP_PROXY=DIRECT" >> /etc/cvmfs/default.local
 
