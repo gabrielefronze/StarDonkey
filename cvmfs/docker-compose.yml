@@ -11,7 +11,7 @@ services:
       depends_on:
         - cvmfs-stratum0
       volumes:
-        - /var/cvmfs-docker/stratum1/spool:/srv/spool/cvmfs
+        - /var/cvmfs-docker/stratum1/spool:/var/spool/cvmfs
         - /var/cvmfs-docker/stratum1/cvmfs:/srv/cvmfs
         - /var/cvmfs-docker/stratum1/keys:/etc/cvmfs
       command: ["httpd", "-D", "FOREGROUND"]
@@ -25,7 +25,7 @@ services:
       hostname: cvmfs-stratum0
       privileged: true
       volumes:
-        - /var/cvmfs-docker/stratum0/spool:/srv/spool/cvmfs
+        - /var/cvmfs-docker/stratum0/spool:/var/spool/cvmfs
         - /var/cvmfs-docker/stratum0/cvmfs:/srv/cvmfs
         - /var/cvmfs-docker/stratum0/keys:/etc/cvmfs
       command: ["httpd", "-D", "FOREGROUND"]
