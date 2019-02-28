@@ -10,6 +10,8 @@ services:
     depends_on:
       - cvmfs-stratum0
       - cvmfs-stratum1
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
     tty: true
 
   cvmfs-stratum1:
