@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos/systemd
 
 MAINTAINER Gabriele Gaetano Fronzé "gfronze@cern.ch"
 
@@ -15,3 +15,6 @@ RUN echo "CVMFS_CACHE_BASE=/cvmfs-cache" >> /etc/cvmfs/default.local
 RUN echo "CVMFS_QUOTA_LIMIT=10240" >> /etc/cvmfs/default.local
 
 RUN echo "CVMFS_SERVER_URL=http://virgo-test-02/cvmfs/virgo.sw" > /etc/cvmfs/config.d/virgo.sw
+
+VOLUME [ “/sys/fs/cgroup” ]
+CMD ["/usr/sbin/init"]
