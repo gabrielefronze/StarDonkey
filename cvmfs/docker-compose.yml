@@ -11,9 +11,10 @@ services:
       depends_on:
         - cvmfs-stratum0
       volumes:
-        - /var/cvmfs-docker/stratum1/spool:/var/spool/cvmfs
-        - /var/cvmfs-docker/stratum1/cvmfs:/srv/cvmfs
-        - /var/cvmfs-docker/stratum1/keys:/etc/cvmfs
+        - /var/cvmfs-docker/stratum1/var/spool/cvmfs:/var/spool/cvmfs
+        - /var/cvmfs-docker/stratum1/cvmfs:/cvmfs
+        - /var/cvmfs-docker/stratum1/srv/cvmfs:/srv/cvmfs
+        - /var/cvmfs-docker/stratum1/etc/cvmfs:/etc/cvmfs
         - /sys/fs/cgroup:/sys/fs/cgroup
 
   cvmfs-stratum0:
@@ -25,7 +26,8 @@ services:
       hostname: cvmfs-stratum0
       privileged: true
       volumes:
-        - /var/cvmfs-docker/stratum0/spool:/var/spool/cvmfs
-        - /var/cvmfs-docker/stratum0/cvmfs:/srv/cvmfs
-        - /var/cvmfs-docker/stratum0/keys:/etc/cvmfs
+        - /var/cvmfs-docker/stratum1/var/spool/cvmfs:/var/spool/cvmfs
+        - /var/cvmfs-docker/stratum1/cvmfs:/cvmfs
+        - /var/cvmfs-docker/stratum1/srv/cvmfs:/srv/cvmfs
+        - /var/cvmfs-docker/stratum1/etc/cvmfs:/etc/cvmfs
         - /sys/fs/cgroup:/sys/fs/cgroup
