@@ -7,6 +7,7 @@ services:
     image: slidspitfire/cvmfs-client-latest:latest
     container_name: cvmfs-client
     hostname: cvmfs-client
+    privileged: true
     depends_on:
       - cvmfs-stratum0
       - cvmfs-stratum1
