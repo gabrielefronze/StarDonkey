@@ -21,6 +21,9 @@ RUN systemctl enable httpd.service
 
 EXPOSE 80
 
+VOLUME [ “/sys/fs/cgroup” ]
+CMD ["/usr/sbin/init"]
+
 # RUN yum install -y httpd && chkconfig --levels 235 httpd on
 
 # this repo will be mounted on /cvmfs/virgo.sw and resides in /srv/cvmfs
