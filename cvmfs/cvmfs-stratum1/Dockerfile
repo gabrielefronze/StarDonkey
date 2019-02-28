@@ -1,6 +1,10 @@
 FROM slidspitfire/cvmfs-stratum0-latest:latest
 MAINTAINER Gabriele Gaetano Fronzé "gfronze@cern.ch"
 
+RUN wget https://raw.githubusercontent.com/cvmfs/cvmfs_info/master/cvmfs_info
+RUN chmod +x cvmfs_info
+RUN yum install -y perl-Compress-Zlib perl-Data-Dumper perl-libwww-perl per-JSON
+
 USER root
 ENV USER root
 ENV HOME /root
