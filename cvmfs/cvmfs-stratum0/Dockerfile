@@ -22,7 +22,7 @@ RUN systemctl enable httpd.service
 RUN sed '/Listen 80/ a Listen 8000' -i /etc/httpd/conf/httpd.conf
 EXPOSE 80
 EXPOSE 8000
-RUN systemctl restart httpd
+# RUN systemctl restart httpd
 
 VOLUME [ “/sys/fs/cgroup” ]
 CMD ["/usr/sbin/init"]
