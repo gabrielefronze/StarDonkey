@@ -20,6 +20,7 @@ RUN echo "CVMFS_HTTP_PROXY=DIRECT" >> /etc/cvmfs/default.local
 RUN systemctl enable httpd.service
 
 EXPOSE 80
+EXPOSE 8000
 
 VOLUME [ “/sys/fs/cgroup” ]
 CMD ["/usr/sbin/init"]
