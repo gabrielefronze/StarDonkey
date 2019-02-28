@@ -2,6 +2,8 @@ FROM centos:7
 
 MAINTAINER Gabriele Gaetano Fronzé "gfronze@cern.ch"
 
+RUN yum update -y && yum -y install nano wget
+
 RUN wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
 RUN yum install -y cvmfs-release-latest.noarch.rpm
 RUN rm -rf cvmfs-release-latest.noarch.rpm
