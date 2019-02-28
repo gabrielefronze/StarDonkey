@@ -2,15 +2,15 @@ version: "2"
 services:
   cvmfs-client:
     build:
-        context: ./cvmfs-client
-        dockerfile: Dockerfile
-      image: slidspitfire/cvmfs-client-latest:latest
-      container_name: cvmfs-client
-      hostname: cvmfs-client
-      depends_on:
-        - cvmfs-stratum0
-        - cvmfs-stratum1
-      tty: true
+      context: ./cvmfs-client
+      dockerfile: Dockerfile
+    image: slidspitfire/cvmfs-client-latest:latest
+    container_name: cvmfs-client
+    hostname: cvmfs-client
+    depends_on:
+      - cvmfs-stratum0
+      - cvmfs-stratum1
+    tty: true
 
   cvmfs-stratum1:
     build:
