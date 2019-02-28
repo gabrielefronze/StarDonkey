@@ -14,7 +14,13 @@ RUN echo "CVMFS_HTTP_PROXY=DIRECT" >> /etc/cvmfs/default.local
 RUN echo "CVMFS_CACHE_BASE=/cvmfs-cache" >> /etc/cvmfs/default.local
 RUN echo "CVMFS_QUOTA_LIMIT=10240" >> /etc/cvmfs/default.local
 
-RUN echo "CVMFS_SERVER_URL=http://virgo-test-02/cvmfs/virgo.sw" > /etc/cvmfs/config.d/virgo.sw
+RUN echo "CVMFS_SERVER_URL=http://virgo-test-02/cvmfs/virgo.sw" > /etc/cvmfs/default.local
 
 VOLUME [ “/sys/fs/cgroup” ]
 CMD ["/usr/sbin/init"]
+
+# setenforce 0
+# cvmfs_config setup
+# service autofs restart
+# cvmfs_config probe
+# cvmfs_config chksetup

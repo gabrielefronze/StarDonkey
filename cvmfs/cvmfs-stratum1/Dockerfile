@@ -11,5 +11,5 @@ ENV HOME /root
 
 RUN yum install mod_wsgi -y
 
-# RUN cvmfs_server add-replica cvmfs-stratum0
-# RUN cvmfs_server snapshot
+# cvmfs_server add-replica -o root http://cvmfs-stratum0:8000/cvmfs/virgo.sw /etc/cvmfs/keys/virgo.sw.pub
+# cvmfs_server snapshot
