@@ -15,7 +15,7 @@ RUN wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noa
 RUN yum install -y cvmfs-release-latest.noarch.rpm
 RUN rm -rf cvmfs-release-latest.noarch.rpm
 RUN yum install -y cvmfs cvmfs-server
-RUN echo "CVMFS_HTTP_PROXY=DIRECT" >> /etc/cvmfs/default.local
+RUN echo "CVMFS_HTTP_PROXY=DIRECT" > /etc/cvmfs/default.local
 
 RUN systemctl enable httpd.service
 
