@@ -9,5 +9,7 @@ USER root
 ENV USER root
 ENV HOME /root
 
+RUN yum install mod_wsgi -y
+
 # RUN cvmfs_server add-replica cvmfs-stratum0
 # RUN cvmfs_server snapshot
