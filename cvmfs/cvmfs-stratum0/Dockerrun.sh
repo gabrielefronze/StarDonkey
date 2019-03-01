@@ -3,7 +3,7 @@ docker run -d \
 --name cvmfs-stratum0 \
 --hostname cvmfs-stratum0 \
 --privileged \
---env-file ./cvmfs-variables.env \
+--env-file ../cvmfs-variables.env \
 --volume /var/cvmfs-docker/stratum0/var/spool/cvmfs:/var/spool/cvmfs \
 --volume /var/cvmfs-docker/stratum0/cvmfs:/cvmfs \
 --volume /var/cvmfs-docker/stratum0/srv/cvmfs:/srv/cvmfs \
