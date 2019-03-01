@@ -14,9 +14,3 @@ COPY client-init.sh /etc/cvmfs-init-scripts
 
 VOLUME [ “/sys/fs/cgroup” ]
 CMD ["/usr/sbin/init"]
-
-# setenforce 0
-# cvmfs_config setup
-# service autofs restart
-# cvmfs_config probe
-# cvmfs_config chksetup
