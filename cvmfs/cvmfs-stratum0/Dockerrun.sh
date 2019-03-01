@@ -1,7 +1,7 @@
 docker run -d \
 -p 80:80 -p 8000:8000 \
 slidspitfire/cvmfs-stratum0-latest:latest \
--name cvmfs-stratum0 \
+--name cvmfs-stratum0 \
 --hostname cvmfs-stratum0 \
 --privileged \
 --env-file ./cvmfs-variables.env \
