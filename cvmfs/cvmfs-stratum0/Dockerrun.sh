@@ -1,1 +1,12 @@
-docker run -d -p 80:80 -p 8000:8000 --name cvmfs-stratum0 slidspitfire/cvmfs-stratum0-latest:latest --hostname cvmfs-stratum0 --privileged --env-file ./cvmfs-variables.env --volume /var/cvmfs-docker/stratum0/var/spool/cvmfs:/var/spool/cvmfs --volume /var/cvmfs-docker/stratum0/cvmfs:/cvmfs --volume /var/cvmfs-docker/stratum0/srv/cvmfs:/srv/cvmfs --volume /var/cvmfs-docker/stratum0/etc/cvmfs:/etc/cvmfs --volume /sys/fs/cgroup:/sys/fs/cgroup
+docker run -d \
+-p 80:80 -p 8000:8000 \
+--name cvmfs-stratum0 \
+--image slidspitfire/cvmfs-stratum0-latest:latest \
+--hostname cvmfs-stratum0 \
+--privileged \
+--env-file ./cvmfs-variables.env \
+--volume /var/cvmfs-docker/stratum0/var/spool/cvmfs:/var/spool/cvmfs \
+--volume /var/cvmfs-docker/stratum0/cvmfs:/cvmfs \
+--volume /var/cvmfs-docker/stratum0/srv/cvmfs:/srv/cvmfs \
+--volume /var/cvmfs-docker/stratum0/etc/cvmfs:/etc/cvmfs \
+--volume /sys/fs/cgroup:/sys/fs/cgroup
