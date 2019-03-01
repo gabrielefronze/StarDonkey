@@ -9,12 +9,6 @@ RUN yum install -y cvmfs-release-latest.noarch.rpm
 RUN rm -rf cvmfs-release-latest.noarch.rpm
 RUN yum install -y cvmfs cvmfs-config-default
 
-RUN echo "CVMFS_SERVER_URL=$CVMFS_STRATUM1_URL/cvmfs/$CVMFS_REPO_NAME" > /etc/cvmfs/default.local
-RUN echo "CVMFS_REPOSITORIES=$CVMFS_REPO_NAME" > /etc/cvmfs/default.local
-RUN echo "CVMFS_HTTP_PROXY=DIRECT" >> /etc/cvmfs/default.local
-RUN echo "CVMFS_CACHE_BASE=/cvmfs-cache" >> /etc/cvmfs/default.local
-RUN echo "CVMFS_QUOTA_LIMIT=10240" >> /etc/cvmfs/default.local
-
 RUN mkdir /etc/cvmfs-init-scripts
 COPY client-init.sh /etc/cvmfs-init-scripts
 
