@@ -11,5 +11,5 @@ ENV HOME /root
 
 RUN yum install mod_wsgi -y
 
-RUN mkdir /etc/cvmfs-init-scripts
+RUN rm /etc/cvmfs-init-scripts/stratum0-init.sh
 COPY stratum1-init.sh /etc/cvmfs-init-scripts
