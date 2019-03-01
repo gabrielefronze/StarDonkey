@@ -24,6 +24,9 @@ EXPOSE 80
 EXPOSE 8000
 # RUN systemctl restart httpd
 
+RUN mkdir /etc/cvmfs-init-scripts
+COPY stratum0-init.sh /etc/cvmfs-init-scripts
+
 VOLUME [ “/sys/fs/cgroup” ]
 CMD ["/usr/sbin/init"]
 

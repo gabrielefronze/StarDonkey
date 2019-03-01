@@ -15,6 +15,9 @@ RUN echo "CVMFS_HTTP_PROXY=DIRECT" >> /etc/cvmfs/default.local
 RUN echo "CVMFS_CACHE_BASE=/cvmfs-cache" >> /etc/cvmfs/default.local
 RUN echo "CVMFS_QUOTA_LIMIT=10240" >> /etc/cvmfs/default.local
 
+RUN mkdir /etc/cvmfs-init-scripts
+COPY client-init.sh /etc/cvmfs-init-scripts
+
 VOLUME [ “/sys/fs/cgroup” ]
 CMD ["/usr/sbin/init"]
 
