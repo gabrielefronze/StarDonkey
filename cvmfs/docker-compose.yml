@@ -8,6 +8,8 @@ services:
     container_name: cvmfs-client
     hostname: cvmfs-client
     privileged: true
+    env_file:
+      - cvmfs-variables.env
     depends_on:
       - cvmfs-stratum0
       - cvmfs-stratum1
@@ -23,6 +25,8 @@ services:
     container_name: cvmfs-stratum1
     hostname: cvmfs-stratum1
     privileged: true
+    env_file:
+      - cvmfs-variables.env
     depends_on:
       - cvmfs-stratum0
     volumes:
@@ -40,6 +44,8 @@ services:
     container_name: cvmfs-stratum0
     hostname: cvmfs-stratum0
     privileged: true
+    env_file:
+      - cvmfs-variables.env
     volumes:
       - /var/cvmfs-docker/stratum0/var/spool/cvmfs:/var/spool/cvmfs
       - /var/cvmfs-docker/stratum0/cvmfs:/cvmfs
