@@ -25,11 +25,7 @@ Running each command on a different host (given the `cvmfs-variables.env` file i
 ## Public keys distribution
 The previous setup works if and only if the public keys generated at the creation of the repository on the stratum-0 get distributed towards the stratum-1 and client containers.
 
-After the execution of the command:
-
-```cvmfs_server mkfs -o root "<repo_name>"```
-
-the public keys will be at the path `/etc/cvmfs/keys/<repo_name>.pub`.
+After the execution of the stratum-0 init script, the public keys will be found at the path `/etc/cvmfs/keys/<repo_name>.pub`.
 This file has to be copied to the stratum-1 and client (in the same path, according to the `cvmfs-variables.env` file) in order to allow acces to the stratum-0 repository.
 
 The `propagate-keys.sh` script is able to handle such task in the **single host** setup.
