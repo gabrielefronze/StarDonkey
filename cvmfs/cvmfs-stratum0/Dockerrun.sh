@@ -1,4 +1,4 @@
-docker-compose -f "${BASH_SOURCE%/*}/../docker-compose.yml" cvmfs-stratum0
+docker build -t slidspitfire/cvmfs-stratum0-latest:latest .
 
 docker run -d \
 -p 80:80 -p 8000:8000 \

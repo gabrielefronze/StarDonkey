@@ -1,4 +1,4 @@
-docker-compose -f "${BASH_SOURCE%/*}/../docker-compose.yml" cvmfs-client
+docker build -t slidspitfire/cvmfs-client-latest:latest .
 
 docker run -t \
 -p 80:80 -p 8000:8000 \
