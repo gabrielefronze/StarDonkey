@@ -24,7 +24,7 @@ Running each command on a different host (given the `cvmfs-variables.env` file i
 ## Networking requirements
 In a multi-host setup the stratum-0 instance and the stratum-1 instances require the hosting machines to have a mutually reachable IP address on which two TCP ports are opened: 80 and 8000.
 
-This means that if the machines are inside a LAN it should be enough to make their IP address static (or covered by a DDNS, while if the interconnection happens via internet a public IP address should be foreseen.
+This means that if the machines are inside a LAN it should be enough to make their IP address static (or covered by a DDNS), while if the interconnection happens via WAN a public IP address should be foreseen.
 
 Note that additional ports might be opened, for example to provide ssh access.
 
