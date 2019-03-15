@@ -6,8 +6,8 @@ docker run -d \
 --hostname cvmfs-stratum1 \
 --privileged \
 --env-file ../cvmfs-variables.env \
---volume /var/cvmfs-docker/stratum1/var/spool/cvmfs:/var/spool/cvmfs \
---volume /var/cvmfs-docker/stratum1/cvmfs:/cvmfs \
+--mount type=bind,source=/var/cvmfs-docker/stratum1/var/spool/cvmfs,target=/var/spool/cvmfs \
+--mount type=bind,source=/var/cvmfs-docker/stratum1/cvmfs,target=/cvmfs \
 --volume /var/cvmfs-docker/stratum1/srv/cvmfs:/srv/cvmfs \
 --volume /var/cvmfs-docker/stratum1/etc/cvmfs:/etc/cvmfs \
 --volume /sys/fs/cgroup:/sys/fs/cgroup \
