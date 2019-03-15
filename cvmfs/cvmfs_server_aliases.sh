@@ -1,15 +1,11 @@
 #!/bin/bash
 function cvmfs_server {
-    if [[ -z "$CVMFS_REPO_NAME" ]]
-    then
-        read -p "Enter the repository name: " reponame
-        export CVMFS_REPO_NAME=$reponame
-    else
-        echo "The operations will be performed on the repository $CVMFS_REPO_NAME"
-        read -p "Press ENTER key to continue, Ctrl-C to abort..."
-    fi
+    CVMFS_REPO_NAME="$2"
 
-    docker exec -ti cvmfs_server cvmfs-stratum0 $@
+    echo "The operations will be performed on the repository $CVMFS_REPO_NAME"
+    read -p "Press ENTER key to continue, Ctrl-C to abort..."
+
+    docker exec -ti cvmfs-stratum0 cvmfs_server $@
 
     if [[ "$1" == "transaction" ]]
     then
@@ -20,4 +16,6 @@ function cvmfs_server {
     then
         mount -o remount,ro overlay_"$CVMFS_REPO_NAME"
     fi
+
+    unset CVMFS_REPO_NAME
 }
