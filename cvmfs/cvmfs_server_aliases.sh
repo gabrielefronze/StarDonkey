@@ -1,5 +1,5 @@
 #!/bin/bash
-sh ./cvmfs-variable.env
+sh "${BASH_SOURCE[0]}"/cvmfs-variable.env
 
 function cvmfs_server {
     docker exec -ti cvmfs_server cvmfs-stratum0 $@
