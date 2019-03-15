@@ -9,8 +9,8 @@ docker run -d \
 --hostname cvmfs-stratum0 \
 --privileged \
 --env-file ../cvmfs-variables.env \
---mount type=bind,source=/var/cvmfs-docker/stratum0/var-spool-cvmfs,target=/var/spool/cvmfs,bind-propagation=rshared,consistency=consistent \
---mount type=bind,source=/var/cvmfs-docker/stratum0/cvmfs,target=/cvmfs,bind-propagation=rshared,consistency=consistent \
+--mount type=bind,source=/var/cvmfs-docker/stratum0/var-spool-cvmfs,target=/var/spool/cvmfs,bind-propagation=rslave,consistency=consistent \
+--mount type=bind,source=/var/cvmfs-docker/stratum0/cvmfs,target=/cvmfs,bind-propagation=rslave,consistency=consistent \
 --volume /var/cvmfs-docker/stratum0/srv-cvmfs:/srv/cvmfs \
 --volume /var/cvmfs-docker/stratum0/etc-cvmfs:/etc/cvmfs \
 --volume /sys/fs/cgroup:/sys/fs/cgroup \
