@@ -2,8 +2,9 @@
 function cvmfs_server {
     CVMFS_REPO_NAME="$2"
 
-    echo "The operations will be performed on the repository $CVMFS_REPO_NAME"
+    echo -e "\nThe operations will be performed on the repository $CVMFS_REPO_NAME"
     read -p "Press ENTER key to continue, Ctrl-C to abort..."
+    echo -e "\n"
 
     docker exec -ti cvmfs-stratum0 cvmfs_server $@
 
