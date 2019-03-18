@@ -1,7 +1,7 @@
 docker build -t slidspitfire/cvmfs-stratum0-latest:latest .
 
 mkdir -p /var/cvmfs-docker/stratum0/var-spool-cvmfs
-mkdir /var/cvmfs-docker/stratum0/cvmfs
+mkdir -p /var/cvmfs-docker/stratum0/cvmfs
 mkdir -p /var/cvmfs-docker/stratum0/srv-cvmfs
 mkdir -p /var/cvmfs-docker/stratum0/etc-cvmfs
 
