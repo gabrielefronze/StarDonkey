@@ -7,7 +7,7 @@ ENV USER root
 ENV HOME /root
 
 RUN apt-get update -y && apt-get -y install \
-    man nano wget epel-release jq
+    man nanoß jq
 
 RUN apt-get install -y cvmfs cvmfs-server
 RUN echo "CVMFS_HTTP_PROXY=DIRECT" > /etc/cvmfs/default.local
