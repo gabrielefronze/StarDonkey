@@ -20,9 +20,11 @@ RUN sed '/Listen 80/ a Listen 8000' -i /etc/httpd/conf/httpd.conf
 EXPOSE 80
 EXPOSE 8000
 
-RUN mkdir /etc/cvmfs-init-scripts
-COPY stratum0-init.sh /etc/cvmfs-init-scripts
-RUN chmod +x /etc/cvmfs-init-scripts/stratum0-init.sh
+RUN mkdir /etc/cvmfs-scripts
+COPY restore-kill-start.sh /etc/cvmfs-scripts
+COPY stratum0-init.sh /etc/cvmfs-scripts
+RUN chmod +x /etc/cvmfs-scripts/stratum0-init.sh
+RUN chmod +x /etc/cvmfs-scripts/restore-kill-start.sh
 
 VOLUME [ “/sys/fs/cgroup” ]
 CMD ["/usr/sbin/init"]
