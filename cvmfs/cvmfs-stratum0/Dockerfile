@@ -7,8 +7,11 @@ ENV USER root
 ENV HOME /root
 
 RUN apt-get update -y && apt-get -y install \
-    man nano jq
+    man nano jq wget
 
+RUN wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
+RUN rpm -i cvmfs-release-latest.noarch.rpm
+RUN rm -rf cvmfs-release-latest.noarch.rpm
 RUN apt-get install -y cvmfs cvmfs-server
 RUN echo "CVMFS_HTTP_PROXY=DIRECT" > /etc/cvmfs/default.local
 
