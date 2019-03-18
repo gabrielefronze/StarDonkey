@@ -1,4 +1,4 @@
-FROM httpd:2.4
+FROM centos/systemd
 
 MAINTAINER Gabriele Gaetano Fronzé "gfronze@cern.ch"
 
@@ -15,7 +15,7 @@ RUN rm -rf cvmfs-release-latest.noarch.rpm
 RUN yum install -y cvmfs cvmfs-server
 RUN echo "CVMFS_HTTP_PROXY=DIRECT" > /etc/cvmfs/default.local
 
-# RUN systemctl enable httpd.service
+RUN systemctl enable httpd.service
 RUN sed '/Listen 80/ a Listen 8000' -i /etc/httpd/conf/httpd.conf
 EXPOSE 80
 EXPOSE 8000
