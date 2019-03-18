@@ -7,7 +7,7 @@ ENV USER root
 ENV HOME /root
 
 RUN apt-get update -y && apt-get -y install \
-    man nano jq wget rpm
+    man nano jq wget rpm redhat-release
 
 RUN wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
 RUN rpm -i cvmfs-release-latest.noarch.rpm
