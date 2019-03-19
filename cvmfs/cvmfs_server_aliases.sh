@@ -36,7 +36,7 @@ function cvmfs_server_container {
         echo "DONE!"
 
     elif [[ "$1" == "initrepo" ]]; then
-        if [[ -z "$2" || -z "$HOST_CVMFS_ROOT_DIR" || -z "$ENV_FILE"]]; then
+        if [[ -z "$2" || -z "$HOST_CVMFS_ROOT_DIR" || -z "$ENV_FILE" ]]; then
             echo "FATAL: no repository name provided as second argument or missing host cvmfs root directory or env file."
         else
             echo "Initializing $2 repository in cvmfs-stratum0 container..."
