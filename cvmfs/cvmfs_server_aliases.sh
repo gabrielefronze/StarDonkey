@@ -46,7 +46,7 @@ function cvmfs_server_container {
         fi
 
     elif [[ "$1" == "recover" ]]; then
-        if [[ -z "$2"]]; then
+        if [[ -z "$2" ]]; then
             echo "FATAL: no repository name provided as second argument or missing host cvmfs root directory or env file."
             
         else
@@ -60,7 +60,7 @@ function cvmfs_server_container {
         
 
     elif [[ "$1" == "regenerate" ]]; then
-        if [[ -z "$2"]]; then
+        if [[ -z "$2" ]]; then
             echo "FATAL: no repository name provided as second argument or missing host cvmfs root directory or env file."
 
         else
