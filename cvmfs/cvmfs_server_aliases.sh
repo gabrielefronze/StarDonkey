@@ -83,9 +83,6 @@ function cvmfs_server_container {
                         cvmfs_server_container run cvmfs-stratum0-"$2" >> regenerate.log
                         echo "DONE!"
 
-                        echo -n "Mounting necessary directories... "
-                        cvmfs_server_container recover "$2" >> regenerate.log
-                        echo "DONE!"
                     else
                         echo -n "Building base cvmfs-stratum0 container... "
                         cvmfs_server_container build >> regenerate.log
@@ -103,6 +100,10 @@ function cvmfs_server_container {
                         commit_new_image "$2" >> regenerate.log
                         echo "DONE!"
                     fi
+
+                    echo -n "Mounting necessary directories... "
+                    cvmfs_server_container recover "$2" >> regenerate.log
+                    echo "DONE!"
 
                     ln -sf regenerate.log last-operation.log
                 fi
