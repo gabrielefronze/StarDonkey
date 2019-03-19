@@ -101,6 +101,14 @@ function cvmfs_server_container {
                     ln -s regenerate.log last-operation.log
                 fi
                 ;;
+
+    help)   echo -e "usage: cvmfs_server_container <command> [<args>]\n\n"
+            echo "The most commonly used cvmfs_server_container commands are:"
+            echo -e "\t- cvmfs_server_container build : build the base container image for stratum0"
+            echo -e "\t- cvmfs_server_container run [output_image_name] [host_cvmfs_root_dir] [env_file]: build the base container image for stratum0"
+            echo -e "\t- cvmfs_server_container initrepo <repo_name> : configure the running container to host repo_name repo and commit the configured container image"
+            echo -e "\t- cvmfs_server_container recover <repo_name> : recovers the repo_name repository in a container that has been killed and restarted"
+            echo -e "\t- cvmfs_server_container regenerate <repo_name> : recovers existing repo_name data in a new container instance (e.g. after a 'docker container prune')"
     
     *)  CVMFS_REPO_NAME="$2"
 
