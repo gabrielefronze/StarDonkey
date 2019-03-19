@@ -20,11 +20,11 @@ function cvmfs_server_container {
     MODE=$1
 
     case "$MODE" in
-    build)  echo "Building cvmfs stratum0 base image with name slidspitfire/cvmfs-stratum0-base:latest... "
+    build)  echo -n "Building cvmfs stratum0 base image with name slidspitfire/cvmfs-stratum0-base:latest... "
             docker build -t slidspitfire/cvmfs-stratum0-base:latest . >> build.log
             echo "DONE!"
 
-            ln -s build.log last-operation.log
+            ln -sf build.log last-operation.log
             ;;
 
     run)    IMAGE_NAME=${2:-slidspitfire/cvmfs-stratum0-base:latest}
@@ -37,7 +37,7 @@ function cvmfs_server_container {
             sh Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" "$IMAGE_NAME" "$ENV_FILE" >> run.log
             echo "DONE!"
 
-            ln -s run.log last-operation.log
+            ln -sf run.log last-operation.log
             ;;
 
     initrepo)   if [[ -z "$2" || -z "$HOST_CVMFS_ROOT_DIR" || -z "$ENV_FILE" ]]; then
@@ -55,7 +55,7 @@ function cvmfs_server_container {
                     cvmfs_server_container recover "$2" >> initrepo.log
                     echo "DONE!"
 
-                    ln -s initrepo.log last-operation.log
+                    ln -sf initrepo.log last-operation.log
                 fi
                 ;;
     
@@ -70,7 +70,7 @@ function cvmfs_server_container {
                     docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/restore-kill-start.sh "$2" >> recover.log
                     echo "DONE!"
                     
-                    ln -s recover.log last-operation.log
+                    ln -sf recover.log last-operation.log
                 fi
                 ;;
 
@@ -98,7 +98,7 @@ function cvmfs_server_container {
                     cvmfs_server_container recover "$2" >> regenerate.log
                     echo "DONE!"
 
-                    ln -s regenerate.log last-operation.log
+                    ln -sf regenerate.log last-operation.log
                 fi
                 ;;
 
