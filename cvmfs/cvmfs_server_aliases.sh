@@ -78,47 +78,31 @@ function cvmfs_server_container {
                     echo "FATAL: no repository name provided as second argument or missing host cvmfs root directory or env file."
 
                 else
-                    # if [[ $(docker images) =~ cvmfs-stratum0-"$2" ]];; then
-                    #     echo -n "Running cvmfs stratum0 docker container as cvmfs-stratum0... "
-                    #     cvmfs_server_container run cvmfs-stratum0-"$2" >> regenerate.log
-                    #     echo "DONE!"
+                    if [[ $(docker images) =~ cvmfs-stratum0-"$2" ]]; then
+                        echo -n "Running cvmfs stratum0 docker container as cvmfs-stratum0... "
+                        cvmfs_server_container run cvmfs-stratum0-"$2" >> regenerate.log
+                        echo "DONE!"
 
-                    #     echo -n "Mounting necessary directories... "
-                    #     cvmfs_server_container recover "$2" >> regenerate.log
-                    #     echo "DONE!"
-                    # else
-                    #     echo -n "Building base cvmfs-stratum0 container... "
-                    #     cvmfs_server_container build >> regenerate.log
-                    #     echo "DONE!"
+                        echo -n "Mounting necessary directories... "
+                        cvmfs_server_container recover "$2" >> regenerate.log
+                        echo "DONE!"
+                    else
+                        echo -n "Building base cvmfs-stratum0 container... "
+                        cvmfs_server_container build >> regenerate.log
+                        echo "DONE!"
 
-                    #     echo -n "Running cvmfs stratum0 docker container as cvmfs-stratum0... "
-                    #     cvmfs_server_container run >> regenerate.log
-                    #     echo "DONE!"
+                        echo -n "Running cvmfs stratum0 docker container as cvmfs-stratum0... "
+                        cvmfs_server_container run >> regenerate.log
+                        echo "DONE!"
 
-                    #     echo -n "Regenerating $2 repository in cvmfs-stratum0 container preserving existing data... "
-                    #     docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/restore-prune-start.sh "$2" >> regenerate.log
-                    #     echo "DONE!"
+                        echo -n "Regenerating $2 repository in cvmfs-stratum0 container preserving existing data... "
+                        docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/restore-prune-start.sh "$2" >> regenerate.log
+                        echo "DONE!"
 
-                    #     echo -n "Committing and running configured container image... "
-                    #     commit_new_image "$2" >> regenerate.log
-                    #     echo "DONE!"
-                    # fi
-
-                    echo -n "Building base cvmfs-stratum0 container... "
-                    cvmfs_server_container build >> regenerate.log
-                    echo "DONE!"
-
-                    echo -n "Running cvmfs stratum0 docker container as cvmfs-stratum0... "
-                    cvmfs_server_container run >> regenerate.log
-                    echo "DONE!"
-
-                    echo -n "Regenerating $2 repository in cvmfs-stratum0 container preserving existing data... "
-                    docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/restore-prune-start.sh "$2" >> regenerate.log
-                    echo "DONE!"
-
-                    echo -n "Committing and running configured container image... "
-                    commit_new_image "$2" >> regenerate.log
-                    echo "DONE!"
+                        echo -n "Committing and running configured container image... "
+                        commit_new_image "$2" >> regenerate.log
+                        echo "DONE!"
+                    fi
 
                     ln -sf regenerate.log last-operation.log
                 fi
