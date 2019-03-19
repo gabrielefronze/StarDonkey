@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function commit_new_image {
-     NEW_IMAGE_NAME=cvmfs-stratum0-"$2"
+     NEW_IMAGE_NAME=cvmfs-stratum0-"$1"
 
     echo "Committing new cvmfs-stratum0 container..."
     docker commit cvmfs-stratum0 "$NEW_IMAGE_NAME"
@@ -42,7 +42,9 @@ function cvmfs_server_container {
             echo "Initializing $2 repository in cvmfs-stratum0 container..."
             docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/stratum0-init.sh "$2"
             
-            commit_new_image
+            commit_new_image "$2"
+
+            cvmfs_server_container recover "$2"
         fi
 
     elif [[ "$1" == "recover" ]]; then
@@ -71,7 +73,7 @@ function cvmfs_server_container {
             echo "Regenerating $2 repository in cvmfs-stratum0 container..."
             docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/restore-prune-start.sh "$2"
 
-            commit_new_image
+            commit_new_image "$2"
 
             cvmfs_server_container recover "$2"
 
