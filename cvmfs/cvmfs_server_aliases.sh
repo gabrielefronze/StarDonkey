@@ -25,14 +25,15 @@ function cvmfs_server_container {
         echo "DONE!"
 
     elif [[ "$1" == "run" ]]; then
-        export HOST_CVMFS_ROOT_DIR=${2:-/var/cvmfs-docker/stratum0}
-        export ENV_FILE=${3:-../cvmfs-variables.env}
+        IMAGE_NAME=${2:-slidspitfire/cvmfs-stratum0-base:latest}
+        export HOST_CVMFS_ROOT_DIR=${3:-/var/cvmfs-docker/stratum0}
+        export ENV_FILE=${4:-../cvmfs-variables.env}
 
         echo "Running cvmfs stratum0 docker container as cvmfs-stratum0 with:"
         echo -e "\t- Host cvmfs dir = $HOST_CVMFS_ROOT_DIR"
         echo -e "\t- Env file = $ENV_FILE"
         read -p "Press ENTER key to continue, Ctrl-C to abort..."
-        sh Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" slidspitfire/cvmfs-stratum0-base:latest "$ENV_FILE"
+        sh Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" "$IMAGE_NAME" "$ENV_FILE"
         echo "DONE!"
 
     elif [[ "$1" == "initrepo" ]]; then
@@ -68,7 +69,7 @@ function cvmfs_server_container {
         else
             cvmfs_server_container build
 
-            cvmfs_server_container run
+            cvmfs_server_container run cvmfs-stratum0-"$2"
 
             echo "Regenerating $2 repository in cvmfs-stratum0 container..."
             docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/restore-prune-start.sh "$2"
