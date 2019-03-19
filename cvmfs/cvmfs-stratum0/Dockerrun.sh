@@ -5,6 +5,8 @@ mkdir -p /var/cvmfs-docker/stratum0/cvmfs
 mkdir -p /var/cvmfs-docker/stratum0/srv-cvmfs
 mkdir -p /var/cvmfs-docker/stratum0/etc-cvmfs
 mkdir -p /var/cvmfs-docker/stratum0/etc-httpd-confd
+mkdir -p /var/cvmfs-docker/stratum0/run-systemd-generator
+touch /var/cvmfs-docker/stratum0/etc-fstab
 
 docker run -d \
 -p 80:80 -p 8000:8000 \
@@ -17,5 +19,7 @@ docker run -d \
 --mount type=bind,source=/var/cvmfs-docker/stratum0/srv-cvmfs,target=/srv/cvmfs,bind-propagation=rshared,consistency=consistent \
 --mount type=bind,source=/var/cvmfs-docker/stratum0/etc-cvmfs,target=/etc/cvmfs,bind-propagation=rshared,consistency=consistent \
 --mount type=bind,source=/var/cvmfs-docker/stratum0/etc-httpd-confd,target=/etc/httpd/conf.d,bind-propagation=rshared,consistency=consistent \
+--mount type=bind,source=/var/cvmfs-docker/stratum0/run-systemd-generator,target=/run/systemd/generator,bind-propagation=rshared,consistency=consistent \
+--mount type=bind,source=/var/cvmfs-docker/stratum0/etc-fstab,target=/etc/fstab,bind-propagation=rshared,consistency=consistent \
 --volume /sys/fs/cgroup:/sys/fs/cgroup \
 slidspitfire/cvmfs-stratum0-latest:latest
