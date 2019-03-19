@@ -12,7 +12,8 @@ mount overlay_$CVMFS_REPO_NAME_PRIVATE
 
 # Restore unit mounts
 echo "Restoring systemd mount services..."
-cp /cvmfs-backup/* /run/systemd/generator
+/usr/lib/systemd/system-generators/systemd-fstab-generator /run/systemd/generator '' ''
+systemctl daemon-reload
 
 # Eventually remove transaction locks left dangling: the above mounts happen to be read-only
 echo "Removing transaction locks if any..."
