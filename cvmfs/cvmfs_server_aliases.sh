@@ -20,14 +20,18 @@ function cvmfs_server_container {
     MODE=$1
 
     case "$MODE" in
-    build)  echo -n "Building cvmfs stratum0 base image with name slidspitfire/cvmfs-stratum0-base:latest... "
+    build)  rm -f build.log
+
+            echo -n "Building cvmfs stratum0 base image with name slidspitfire/cvmfs-stratum0-base:latest... "
             docker build -t slidspitfire/cvmfs-stratum0-base:latest . >> build.log
             echo "DONE!"
 
             ln -sf build.log last-operation.log
             ;;
 
-    run)    IMAGE_NAME=${2:-slidspitfire/cvmfs-stratum0-base:latest}
+    run)    rm -f run.log
+    
+            IMAGE_NAME=${2:-slidspitfire/cvmfs-stratum0-base:latest}
             export HOST_CVMFS_ROOT_DIR=${3:-/var/cvmfs-docker/stratum0}
             export ENV_FILE=${4:-../cvmfs-variables.env}
 
@@ -40,7 +44,9 @@ function cvmfs_server_container {
             ln -sf run.log last-operation.log
             ;;
 
-    initrepo)   if [[ -z "$2" || -z "$HOST_CVMFS_ROOT_DIR" || -z "$ENV_FILE" ]]; then
+    initrepo)   rm -f initrepo.log
+    
+                if [[ -z "$2" || -z "$HOST_CVMFS_ROOT_DIR" || -z "$ENV_FILE" ]]; then
                     echo "FATAL: no repository name provided as second argument or missing host cvmfs root directory or env file."
                 else
                     echo -n "Initializing $2 repository in cvmfs-stratum0 container... "
@@ -59,7 +65,9 @@ function cvmfs_server_container {
                 fi
                 ;;
     
-    recover)    if [[ -z "$2" ]]; then
+    recover)    rm -f recover.log
+    
+                if [[ -z "$2" ]]; then
                     echo "FATAL: no repository name provided as second argument or missing host cvmfs root directory or env file."
             
                 else
@@ -74,7 +82,9 @@ function cvmfs_server_container {
                 fi
                 ;;
 
-    regenerate) if [[ -z "$2" ]]; then
+    regenerate) rm -f regenerate.log
+    
+                if [[ -z "$2" ]]; then
                     echo "FATAL: no repository name provided as second argument or missing host cvmfs root directory or env file."
 
                 else
@@ -110,13 +120,13 @@ function cvmfs_server_container {
                 ;;
 
     help)   echo -e "usage: cvmfs_server_container <command> [<args>]\n\n"
-        echo "The most commonly used cvmfs_server_container commands are:"
-        echo -e "\t- cvmfs_server_container build : build the base container image for stratum0"
-        echo -e "\t- cvmfs_server_container run [output_image_name] [host_cvmfs_root_dir] [env_file]: build the base container image for stratum0"
-        echo -e "\t- cvmfs_server_container initrepo <repo_name> : configure the running container to host repo_name repo and commit the configured container image"
-        echo -e "\t- cvmfs_server_container recover <repo_name> : recovers the repo_name repository in a container that has been killed and restarted"
-        echo -e "\t- cvmfs_server_container regenerate <repo_name> : recovers existing repo_name data in a new container instance (e.g. after a 'docker container prune')"
-        ;;
+            echo "The most commonly used cvmfs_server_container commands are:"
+            echo -e "\t- cvmfs_server_container build : build the base container image for stratum0"
+            echo -e "\t- cvmfs_server_container run [output_image_name] [host_cvmfs_root_dir] [env_file]: build the base container image for stratum0"
+            echo -e "\t- cvmfs_server_container initrepo <repo_name> : configure the running container to host repo_name repo and commit the configured container image"
+            echo -e "\t- cvmfs_server_container recover <repo_name> : recovers the repo_name repository in a container that has been killed and restarted"
+            echo -e "\t- cvmfs_server_container regenerate <repo_name> : recovers existing repo_name data in a new container instance (e.g. after a 'docker container prune')"
+            ;;
     
     *)  CVMFS_REPO_NAME="$2"
 
