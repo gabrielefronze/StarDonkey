@@ -39,7 +39,7 @@ function cvmfs_server_container {
 
     elif [[ "$1" == "initrepo" ]]
     then
-        if [[ -z "$2"]] && [[ -z "$HOST_CVMFS_ROOT_DIR"]] && [[ -z "$ENV_FILE"]]
+        if [[ -z "$2" && -z "$HOST_CVMFS_ROOT_DIR" && -z "$ENV_FILE"]]
         then
             echo "Initializing $2 repository in cvmfs-stratum0 container..."
             docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/stratum0-init.sh "$2"
