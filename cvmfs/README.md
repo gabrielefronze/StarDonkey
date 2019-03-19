@@ -46,3 +46,15 @@ This file has to be copied to the stratum-1 and client (in the same path, accord
 
 The `propagate-keys.sh` script is able to handle such task in the **single host** setup.
 To propagate the same procedure in a multi-host setup, omologous commands have to be executed on different machines.
+
+## How to handle crashes, container kills and prunes
+
+### **Stratum0 procedures**
+Some scripts are already installed in the `/etc/cvmfs-scripts` folder to tackle bizarre cvmfs behaviors in case of crashes and sudden shutdowns.
+
+In case of `docker container kill`, that is equivalent to a reboot of a physical machine, it is enough to execute the `/etc/cvmfs-scripts/restore-kill-start.sh` script to get back to working order.
+
+In case of `docker container kill &&  docker container prune`, that is equivalent to a replacement of the OS (aka fresh install), it is enough to execute the `/etc/cvmfs-scripts/restore-prune-start.sh` script to get back to working order without loosing any data.
+
+### **Stratum1 procedures**
+To be done...
