@@ -22,9 +22,11 @@ EXPOSE 8000
 
 RUN mkdir /etc/cvmfs-scripts
 COPY restore-kill-start.sh /etc/cvmfs-scripts
+COPY restore-prune-start.sh /etc/cvmfs-scripts
 COPY stratum0-init.sh /etc/cvmfs-scripts
 RUN chmod +x /etc/cvmfs-scripts/stratum0-init.sh
 RUN chmod +x /etc/cvmfs-scripts/restore-kill-start.sh
+RUN chmod +x /etc/cvmfs-scripts/restore-prune-start.sh
 
 VOLUME [ “/sys/fs/cgroup” ]
 CMD ["/usr/sbin/init"]
