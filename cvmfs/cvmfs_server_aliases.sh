@@ -67,8 +67,6 @@ function cvmfs_server_container {
             echo "FATAL: no repository name provided as second argument or missing host cvmfs root directory or env file."
 
         else
-            cvmfs_server_container build
-
             cvmfs_server_container run cvmfs-stratum0-"$2"
 
             echo "Regenerating $2 repository in cvmfs-stratum0 container..."
