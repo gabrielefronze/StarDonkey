@@ -3,6 +3,9 @@
 function commit_new_image {
      NEW_IMAGE_NAME=cvmfs-stratum0-"$1"
 
+    echo "Removing duplicate image if any..."
+    docker rmi "$NEW_IMAGE_NAME"
+
     echo "Committing new cvmfs-stratum0 container..."
     docker commit cvmfs-stratum0 "$NEW_IMAGE_NAME"
 
