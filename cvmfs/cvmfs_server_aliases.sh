@@ -57,6 +57,7 @@ function cvmfs_server_container {
         else
             REQUIRED_REPOS="$2"
             REPO_NAME_ARRAY=$(echo $IN | tr "," "\n")
+            REQUIRED_REPOS_SUFFIX=echo $REQUIRED_REPOS | sed 's/\,/-/'
 
             for REPO_NAME in $REPO_NAME_ARRAY
             do
@@ -66,7 +67,7 @@ function cvmfs_server_container {
             done
             
             echo -n "Committing and running configured container image... "
-            commit_new_image "$REQUIRED_REPOS" >> initrepo.log
+            commit_new_image "$REQUIRED_REPOS_SUFFIX" >> initrepo.log
             echo "DONE!"
 
 
@@ -116,10 +117,11 @@ function cvmfs_server_container {
         else
             REQUIRED_REPOS="$2" 
             REPO_NAME_ARRAY=$(echo $IN | tr "," "\n")
+            REQUIRED_REPOS_SUFFIX=echo $REQUIRED_REPOS | sed 's/\,/-/'
 
             if [[ $(docker images) =~ cvmfs-stratum0-"$REPO_NAME" ]]; then
                 echo -n "Running cvmfs stratum0 docker container as cvmfs-stratum0... "
-                cvmfs_server_container run cvmfs-stratum0-"$REQUIRED_REPOS" >> regenerate.log
+                cvmfs_server_container run cvmfs-stratum0-"$REQUIRED_REPOS_SUFFIX" >> regenerate.log
                 echo "DONE!"
 
             else
@@ -139,7 +141,7 @@ function cvmfs_server_container {
                 done
 
                 echo -n "Committing and running configured container image... "
-                commit_new_image "$REQUIRED_REPOS" >> regenerate.log
+                commit_new_image "$REQUIRED_REPOS_SUFFIX" >> regenerate.log
                 echo "DONE!"
             fi
 
