@@ -57,7 +57,7 @@ function cvmfs_server_container {
         else
             REQUIRED_REPOS="$2"
             REPO_NAME_ARRAY=$(echo $REQUIRED_REPOS | tr "," "\n")
-            REQUIRED_REPOS_SUFFIX=echo $REQUIRED_REPOS | sed 's/\,/-/'
+            REQUIRED_REPOS_SUFFIX=$(echo $REQUIRED_REPOS | sed 's/\,/-/')
 
             for REPO_NAME in $REPO_NAME_ARRAY
             do
@@ -117,7 +117,7 @@ function cvmfs_server_container {
         else
             REQUIRED_REPOS="$2" 
             REPO_NAME_ARRAY=$(echo $REQUIRED_REPOS | tr "," "\n")
-            REQUIRED_REPOS_SUFFIX=echo $REQUIRED_REPOS | sed 's/\,/-/'
+            REQUIRED_REPOS_SUFFIX=$(echo $REQUIRED_REPOS | sed 's/\,/-/')
 
             if [[ $(docker images) =~ cvmfs-stratum0-"$REPO_NAME" ]]; then
                 echo -n "Running cvmfs stratum0 docker container as cvmfs-stratum0... "
