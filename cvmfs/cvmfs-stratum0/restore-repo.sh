@@ -3,16 +3,20 @@ REPO_NAME="$1"
 # Recreate the httpd configuration file
 if [[ ! -f /etc/httpd/confd/cvmfs."$REPO_NAME".conf ]]; then
     echo "Recreating httpd configuration files for $REPO_NAME"
-    cp cvmfs.dummy.conf /etc/httpd/confd/cvmfs."$REPO_NAME".conf
-    sed -i 's/DUMMY_REPLACE_ME/$REPO_NAME/g' /etc/httpd/confd/cvmfs."$REPO_NAME".conf
+    cp /etc/cvmfs-scripts/cvmfs.dummy.conf /etc/httpd/conf.d/cvmfs."$REPO_NAME".conf
+    sed -i "s/DUMMY_REPLACE_ME/${REPO_NAME}/g" /etc/httpd/conf.d/cvmfs."$REPO_NAME".conf
     systemctl restart httpd
 fi
 
 # Recreate fstab entries and restore unit mounts
-if [[ ! (grep -q $REPO_NAME /etc/fstab) ]]; then
+if [[ ! $(grep -q $REPO_NAME /etc/fstab) ]]; then
+    if [[ ! -f /etc/fstab ]]; then
+        touch /etc/fstab
+    fi
+    
     echo "Recreating fstab entries for $REPO_NAME"
-    cp dummy-fstab /etc/"$REPO_NAME"-fstab
-    sed -i 's/DUMMY_REPLACE_ME/$REPO_NAME/g' /etc/"$REPO_NAME"-fstab
+    cp /etc/cvmfs-scripts/dummy-fstab /etc/"$REPO_NAME"-fstab
+    sed -i "s/DUMMY_REPLACE_ME/${REPO_NAME}/g" /etc/"$REPO_NAME"-fstab
     cat /etc/"$REPO_NAME"-fstab >> /etc/fstab
     rm -f /etc/"$REPO_NAME"-fstab
 
