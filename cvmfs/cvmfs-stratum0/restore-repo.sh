@@ -13,11 +13,11 @@ if [[ ! $(grep -q $REPO_NAME /etc/fstab) ]]; then
     if [[ ! -f /etc/fstab ]]; then
         touch /etc/fstab
     fi
-    
+
     echo "Recreating fstab entries for $REPO_NAME"
     cp /etc/cvmfs-scripts/dummy-fstab /etc/"$REPO_NAME"-fstab
     sed -i "s/DUMMY_REPLACE_ME/${REPO_NAME}/g" /etc/"$REPO_NAME"-fstab
-    cat /etc/"$REPO_NAME"-fstab >> /etc/fstab
+    (cat /etc/"$REPO_NAME"-fstab; echo) >> /etc/fstab
     rm -f /etc/"$REPO_NAME"-fstab
 
     echo "Restoring systemd mount services..."
