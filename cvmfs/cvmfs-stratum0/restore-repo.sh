@@ -1,7 +1,7 @@
 REPO_NAME="$1"
 
 # Recreate the httpd configuration file
-if [[ ! -f /etc/httpd/confd/cvmfs."$REPO_NAME".conf ]]; then
+if [[ ! -f /etc/httpd/conf.d/cvmfs."$REPO_NAME".conf ]]; then
     echo "Recreating httpd configuration files for $REPO_NAME"
     cp /etc/cvmfs-scripts/cvmfs.dummy.conf /etc/httpd/conf.d/cvmfs."$REPO_NAME".conf
     sed -i "s/DUMMY_REPLACE_ME/${REPO_NAME}/g" /etc/httpd/conf.d/cvmfs."$REPO_NAME".conf
@@ -9,11 +9,13 @@ if [[ ! -f /etc/httpd/confd/cvmfs."$REPO_NAME".conf ]]; then
 fi
 
 # Recreate fstab entries and restore unit mounts
-if [[ ! $(grep -q $REPO_NAME /etc/fstab) ]]; then
-    if [[ ! -f /etc/fstab ]]; then
-        touch /etc/fstab
-    fi
+if [[ ! -f /etc/fstab ]]; then
+    touch /etc/fstab
+fi
 
+countFound=`grep -ir "${REPO_NAME}" /etc/fstab`
+
+if [[ "$countFound" == 0 ]]; then
     echo "Recreating fstab entries for $REPO_NAME"
     cp /etc/cvmfs-scripts/dummy-fstab /etc/"$REPO_NAME"-fstab
     sed -i "s/DUMMY_REPLACE_ME/${REPO_NAME}/g" /etc/"$REPO_NAME"-fstab
@@ -29,11 +31,6 @@ fi
 echo "Unmounting $REPO_NAME left arounds..."
 umount overlay_"$REPO_NAME"
 umount /dev/fuse
-
-# Mount rdonly and overlay directory using fstab contents
-# echo "Mouting $REPO_NAME fstab entires..."
-# mount cvmfs2#"$REPO_NAME"
-# mount overlay_"$REPO_NAME"
 
 # Eventually remove transaction locks left dangling: the above mounts happen to be read-only
 if [[ -f /var/spool/cvmfs/"$REPO_NAME"/in_transaction.lock ]]; then
