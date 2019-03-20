@@ -13,7 +13,7 @@ if [[ ! -f /etc/fstab ]]; then
     touch /etc/fstab
 fi
 
-countFound=`grep -ir "${REPO_NAME}" /etc/fstab`
+countFound=`grep -c "${REPO_NAME}" /etc/fstab`
 
 if [[ "$countFound" == 0 ]]; then
     echo "Recreating fstab entries for $REPO_NAME"
