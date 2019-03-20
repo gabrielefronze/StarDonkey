@@ -56,7 +56,7 @@ function cvmfs_server_container {
             echo "FATAL: no repository name provided as second argument or missing host cvmfs root directory or env file."
         else
             REQUIRED_REPOS="$2"
-            REPO_NAME_ARRAY=$(echo $IN | tr "," "\n")
+            REPO_NAME_ARRAY=$(echo $REQUIRED_REPOS | tr "," "\n")
             REQUIRED_REPOS_SUFFIX=echo $REQUIRED_REPOS | sed 's/\,/-/'
 
             for REPO_NAME in $REPO_NAME_ARRAY
@@ -94,7 +94,7 @@ function cvmfs_server_container {
             export ENV_FILE=${4:-../cvmfs-variables.env}
 
             REQUIRED_REPOS="$2" 
-            REPO_NAME_ARRAY=$(echo $IN | tr "," "\n")
+            REPO_NAME_ARRAY=$(echo $REQUIRED_REPOS | tr "," "\n")
 
             for REPO_NAME in $REPO_NAME_ARRAY
             do
@@ -116,7 +116,7 @@ function cvmfs_server_container {
 
         else
             REQUIRED_REPOS="$2" 
-            REPO_NAME_ARRAY=$(echo $IN | tr "," "\n")
+            REPO_NAME_ARRAY=$(echo $REQUIRED_REPOS | tr "," "\n")
             REQUIRED_REPOS_SUFFIX=echo $REQUIRED_REPOS | sed 's/\,/-/'
 
             if [[ $(docker images) =~ cvmfs-stratum0-"$REPO_NAME" ]]; then
