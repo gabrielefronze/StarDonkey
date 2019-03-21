@@ -1,16 +1,13 @@
-docker build -t slidspitfire/cvmfs-stratum1-latest:latest .
+# This file is subject to the terms and conditions defined by
+# the Creative Commons BY-NC-CC standard and was developed by
+# Gabriele Gaetano Fronzé and Sara Vallero.
+# For abuse reports and other communications write to 
+# <gabriele.fronze at to.infn.it>
 
-mkdir -p /var/cvmfs-docker/stratum1/var-spool-cvmfs
-mkdir /var/cvmfs-docker/stratum1/cvmfs
+CVMFS_ROOT_DIR=/var/cvmfs-docker/stratum1
+CVMFS_CONTAINER_IMAGE_NAME=slidspitfire/cvmfs-stratum1-base:latest
 
-docker run -d \
--p 8000:8000 \
---name cvmfs-stratum1 \
---hostname cvmfs-stratum1 \
---privileged \
---mount type=bind,source=/var/cvmfs-docker/stratum1/var-spool-cvmfs,target=/var/spool/cvmfs \
---mount type=bind,source=/var/cvmfs-docker/stratum1/cvmfs,target=/cvmfs \
---volume /var/cvmfs-docker/stratum1/srv-cvmfs:/srv/cvmfs \
---volume /var/cvmfs-docker/stratum1/etc-cvmfs:/etc/cvmfs \
---volume /sys/fs/cgroup:/sys/fs/cgroup \
-slidspitfire/cvmfs-stratum1-latest:latest
+sh Dockerrun-args.sh $CVMFS_ROOT_DIR $CVMFS_CONTAINER_IMAGE_NAME
+
+unset CVMFS_ROOT_DIR
+unset CVMFS_CONTAINER_IMAGE_NAME

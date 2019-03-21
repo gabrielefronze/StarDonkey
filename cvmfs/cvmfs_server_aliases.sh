@@ -35,7 +35,7 @@ function cvmfs_server_container {
 
         IMAGE_NAME="$CVMFS_CONTAINER_BASE_IMAGE_NAME""$STRATUM"-base
 
-        echo -n "Building cvmfs stratum0 base image with name $IMAGE_NAME... "
+        echo -n "Building cvmfs stratum$STRATUM base image with name $IMAGE_NAME... "
         docker build -t "$IMAGE_NAME" "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs/cvmfs-stratum"$STRATUM" >> build.log
         echo "done"
 
@@ -58,7 +58,7 @@ function cvmfs_server_container {
 
         IMAGE_NAME="$CVMFS_CONTAINER_BASE_IMAGE_NAME""$STRATUM"-base
 
-        echo "Running cvmfs stratum0 docker container as cvmfs-stratum0 with:"
+        echo "Running cvmfs stratum$STRATUM docker container as cvmfs-stratum0 with:"
         echo -e "\t- Host cvmfs dir = $HOST_CVMFS_ROOT_DIR"
         sh "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs/cvmfs-stratum"$STRATUM"/Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" "$IMAGE_NAME" >> run.log
         echo "done"
@@ -127,8 +127,10 @@ function cvmfs_server_container {
         echo -e "Usage: cvmfs_server_container COMMAND [options] <parameters>\n"
         echo -e "Supported commands:\n"
         echo -e "  get          Clone the git repo locally"
-        echo -e "  build        Build the stratum0 container image"
-        echo -e "  run          Runs the stratum0 container as cvmfs-stratum0"
+        echo -e "  build        [0/1]"
+        echo -e "               Build the stratum[0/1] container image"
+        echo -e "  run          [0/1]"
+        echo -e "               Runs the stratum[0/1] container as cvmfs-stratum[0/1]"
         echo -e "  mkfs-list    <fully qualified repository name>,"
         echo -e "               [fully qualified repository name],..."
         echo -e "               Configures the running container"
