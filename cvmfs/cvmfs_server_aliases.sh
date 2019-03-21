@@ -46,7 +46,7 @@ function cvmfs_server_container {
     run)    
         rm -f run.log
 
-        HOST_CVMFS_ROOT_DIR=${2:-/var/cvmfs-docker/stratum0}
+        HOST_CVMFS_ROOT_DIR=${3:-/var/cvmfs-docker/stratum0}
         STRATUM="dummy"
 
         if [[ ( ! -z $2 ) && ( "$2"==0 || "$2"==1 )]]; then
