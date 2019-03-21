@@ -6,19 +6,30 @@
 # For abuse reports and other communications write to 
 # <gabriele.fronze at to.infn.it>
 
-export CVMFS_SERVER_LOCAL_GIT_REPO=~/StarDonkey/cvmfs/
+export CVMFS_SERVER_GIT_URL=https://github.com/gabrielefronze/StarDonkey
+export CVMFS_SERVER_LOCAL_GIT_REPO=~/StarDonkey/
 export CVMFS_CONTAINER_BASE_IMAGE_NAME=slidspitfire/cvmfs-stratum0-base
 
 function cvmfs_server_container {
     MODE=$1
 
     case "$MODE" in
+    # Clone the remote git repo locally
+    get)
+        rm -f get.log
+
+        echo -n "Cloning git repo from $CVMFS_SERVER_GIT_URL in $CVMFS_SERVER_LOCAL_GIT_REPO... "
+        git clone "$CVMFS_SERVER_GIT_URL" "$CVMFS_SERVER_LOCAL_GIT_REPO" >> get.log
+        echo "done"
+
+        ln -sf get.log last-operation.log
+        ;;
     # Option to build the base container image
     build)  
         rm -f build.log
 
         echo -n "Building cvmfs stratum0 base image with name $CVMFS_CONTAINER_BASE_IMAGE_NAME... "
-        docker build -t "$CVMFS_CONTAINER_BASE_IMAGE_NAME" "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs-stratum0 >> build.log
+        docker build -t "$CVMFS_CONTAINER_BASE_IMAGE_NAME" "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs/cvmfs-stratum0 >> build.log
         echo "done"
 
         ln -sf build.log last-operation.log
@@ -34,7 +45,7 @@ function cvmfs_server_container {
         echo "Running cvmfs stratum0 docker container as cvmfs-stratum0 with:"
         echo -e "\t- Host cvmfs dir = $HOST_CVMFS_ROOT_DIR"
         echo -e "\t- Env file = $ENV_FILE"
-        sh "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs-stratum0/Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" "$CVMFS_CONTAINER_BASE_IMAGE_NAME" "$ENV_FILE" >> run.log
+        sh "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs/cvmfs-stratum0/Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" "$CVMFS_CONTAINER_BASE_IMAGE_NAME" "$ENV_FILE" >> run.log
         echo "done"
 
         ln -sf run.log last-operation.log
@@ -87,6 +98,7 @@ function cvmfs_server_container {
         echo -e "CernVM-FS Container Server Tool\n"
         echo -e "Usage: cvmfs_server_container COMMAND [options] <parameters>\n"
         echo -e "Supported commands:\n"
+        echo -e "  get          Clone the git repo locally"
         echo -e "  build        Build the stratum0 container image"
         echo -e "  run          Runs the stratum0 container as cvmfs-stratum0"
         echo -e "  mkfs         <fully qualified repository name>,"
