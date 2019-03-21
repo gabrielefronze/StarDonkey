@@ -6,6 +6,7 @@
 # For abuse reports and other communications write to 
 # <gabriele.fronze at to.infn.it>
 
+export CVMFS_SERVER_LOCAL_GIT_REPO=~/StarDonkey/cvmfs/
 export CVMFS_CONTAINER_BASE_IMAGE_NAME=slidspitfire/cvmfs-stratum0-base
 
 function cvmfs_server_container {
@@ -17,7 +18,7 @@ function cvmfs_server_container {
         rm -f build.log
 
         echo -n "Building cvmfs stratum0 base image with name $CVMFS_CONTAINER_BASE_IMAGE_NAME... "
-        docker build -t $CVMFS_CONTAINER_BASE_IMAGE_NAME . >> build.log
+        docker build -t "$CVMFS_CONTAINER_BASE_IMAGE_NAME" "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs-stratum0 >> build.log
         echo "done"
 
         ln -sf build.log last-operation.log
@@ -27,13 +28,13 @@ function cvmfs_server_container {
     run)    
         rm -f run.log
 
-        export HOST_CVMFS_ROOT_DIR=${2:-/var/cvmfs-docker/stratum0}
-        export ENV_FILE=${3:-../cvmfs-variables.env}
+        HOST_CVMFS_ROOT_DIR=${2:-/var/cvmfs-docker/stratum0}
+        ENV_FILE=${3:-../cvmfs-variables.env}
 
         echo "Running cvmfs stratum0 docker container as cvmfs-stratum0 with:"
         echo -e "\t- Host cvmfs dir = $HOST_CVMFS_ROOT_DIR"
         echo -e "\t- Env file = $ENV_FILE"
-        sh Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" "$CVMFS_CONTAINER_BASE_IMAGE_NAME" "$ENV_FILE" >> run.log
+        sh "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs-stratum0/Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" "$CVMFS_CONTAINER_BASE_IMAGE_NAME" "$ENV_FILE" >> run.log
         echo "done"
 
         ln -sf run.log last-operation.log
@@ -66,8 +67,8 @@ function cvmfs_server_container {
     mount)
         rm -f recover.log
 
-        export HOST_CVMFS_ROOT_DIR=${2:-/var/cvmfs-docker/stratum0}
-        export ENV_FILE=${3:-../cvmfs-variables.env}
+        HOST_CVMFS_ROOT_DIR=${2:-/var/cvmfs-docker/stratum0}
+        ENV_FILE=${3:-../cvmfs-variables.env}
 
         REPO_NAME_ARRAY=$(ls $HOST_CVMFS_ROOT_DIR/srv-cvmfs/ | tr " " "\n" | sed "/info/d")
 
