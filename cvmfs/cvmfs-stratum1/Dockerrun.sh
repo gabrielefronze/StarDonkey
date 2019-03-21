@@ -4,7 +4,7 @@ mkdir -p /var/cvmfs-docker/stratum1/var-spool-cvmfs
 mkdir /var/cvmfs-docker/stratum1/cvmfs
 
 docker run -d \
--p 80:80 -p 8000:8000 \
+-p 8000:8000 \
 --name cvmfs-stratum1 \
 --hostname cvmfs-stratum1 \
 --privileged \
