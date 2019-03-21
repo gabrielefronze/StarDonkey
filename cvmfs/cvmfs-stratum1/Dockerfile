@@ -1,6 +1,4 @@
 FROM slidspitfire/cvmfs-stratum0-latest:latest
-MAINTAINER Gabriele Gaetano Fronzé "gfronze@cern.ch"
-
 
 USER root
 ENV USER root

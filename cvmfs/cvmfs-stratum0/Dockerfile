@@ -6,8 +6,6 @@
 
 FROM centos/systemd
 
-MAINTAINER Gabriele Gaetano Fronzé "gfronze@cern.ch"
-
 USER root
 ENV USER root
 ENV HOME /root
