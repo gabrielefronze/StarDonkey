@@ -8,7 +8,7 @@
 
 export CVMFS_SERVER_GIT_URL=https://github.com/gabrielefronze/StarDonkey
 export CVMFS_SERVER_LOCAL_GIT_REPO=~/StarDonkey/
-export CVMFS_CONTAINER_BASE_IMAGE_NAME=slidspitfire/cvmfs-stratum0-base
+export CVMFS_CONTAINER_BASE_IMAGE_NAME=slidspitfire/cvmfs-stratum
 
 function cvmfs_server_container {
     MODE=$1
@@ -24,8 +24,19 @@ function cvmfs_server_container {
     build)  
         rm -f build.log
 
-        echo -n "Building cvmfs stratum0 base image with name $CVMFS_CONTAINER_BASE_IMAGE_NAME... "
-        docker build -t "$CVMFS_CONTAINER_BASE_IMAGE_NAME" "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs/cvmfs-stratum0 >> build.log
+        STRATUM="dummy"
+        
+        if [[ ( ! -z $2 ) && ( "$2"==0 || "$2"==1 )]]; then
+            STRATUM="$2"
+        else
+            echo "FATAL: provided option $2 not recognized. Please select [0/1]."
+            exit 1
+        fi
+
+        IMAGE_NAME="$CVMFS_CONTAINER_BASE_IMAGE_NAME""$STRATUM"-base
+
+        echo -n "Building cvmfs stratum0 base image with name $IMAGE_NAME... "
+        docker build -t "$IMAGE_NAME" "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs/cvmfs-stratum"$STRATUM" >> build.log
         echo "done"
 
         ln -sf build.log last-operation.log
@@ -36,21 +47,32 @@ function cvmfs_server_container {
         rm -f run.log
 
         HOST_CVMFS_ROOT_DIR=${2:-/var/cvmfs-docker/stratum0}
+        STRATUM="dummy"
+
+        if [[ ( ! -z $2 ) && ( "$2"==0 || "$2"==1 )]]; then
+            STRATUM="$2"
+        else
+            echo "FATAL: provided option $2 not recognized. Please select [0/1]."
+            exit 1
+        fi
+
+        IMAGE_NAME="$CVMFS_CONTAINER_BASE_IMAGE_NAME""$STRATUM"-base
 
         echo "Running cvmfs stratum0 docker container as cvmfs-stratum0 with:"
         echo -e "\t- Host cvmfs dir = $HOST_CVMFS_ROOT_DIR"
-        sh "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs/cvmfs-stratum0/Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" "$CVMFS_CONTAINER_BASE_IMAGE_NAME" >> run.log
+        sh "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs/cvmfs-stratum"$STRATUM"/Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" "$IMAGE_NAME" >> run.log
         echo "done"
 
         ln -sf run.log last-operation.log
         ;;
 
     # Option to initialize the required repo[s] using the internal script and committing the new image on top of the existing
-    mkfs)
+    mkfs-list)
         rm -f initrepo.log
 
         if [[ -z "$2" ]]; then
             echo "FATAL: no repository name provided."
+            exit 1
         else
             REQUIRED_REPOS="$2"
             REPO_NAME_ARRAY=$(echo $REQUIRED_REPOS | tr "," "\n")
@@ -72,16 +94,29 @@ function cvmfs_server_container {
     mount)
         rm -f recover.log
 
-        HOST_CVMFS_ROOT_DIR=${2:-/var/cvmfs-docker/stratum0}
+        if [[ "$2" == "-a" || -z "$2" ]]; then
+            HOST_CVMFS_ROOT_DIR=${3:-/var/cvmfs-docker/stratum0}
 
-        REPO_NAME_ARRAY=$(ls $HOST_CVMFS_ROOT_DIR/srv-cvmfs/ | tr " " "\n" | sed "/info/d")
+            REPO_NAME_ARRAY=$(ls $HOST_CVMFS_ROOT_DIR/srv-cvmfs/ | tr " " "\n" | sed "/info/d")
 
-        for REPO_NAME in $REPO_NAME_ARRAY
-        do
-            echo -n "Recovering $REPO_NAME repository in cvmfs-stratum0 container..."
-            docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/restore-repo.sh "$REPO_NAME" >> recover.log
-            echo "done"
-        done
+            for REPO_NAME in $REPO_NAME_ARRAY
+            do
+                echo -n "Recovering $REPO_NAME repository in cvmfs-stratum0 container... "
+                docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/restore-repo.sh "$REPO_NAME" >> recover.log
+                echo "done"
+            done
+        else
+            REQUIRED_REPOS="$2"
+            REPO_NAME_ARRAY=$(echo $REQUIRED_REPOS | tr "," "\n")
+            REQUIRED_REPOS_SUFFIX=$(echo $REQUIRED_REPOS | sed 's/\,/-/')
+
+            for REPO_NAME in $REPO_NAME_ARRAY
+            do
+                echo -n "Recovering $REPO_NAME repository in cvmfs-stratum0 container... "
+                docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/restore-repo.sh "$REPO_NAME" >> recover.log
+                echo "done"
+            done
+        fi
         
         ln -sf recover.log last-operation.log
         ;;
@@ -94,13 +129,19 @@ function cvmfs_server_container {
         echo -e "  get          Clone the git repo locally"
         echo -e "  build        Build the stratum0 container image"
         echo -e "  run          Runs the stratum0 container as cvmfs-stratum0"
-        echo -e "  mkfs         <fully qualified repository name>,"
+        echo -e "  mkfs-list    <fully qualified repository name>,"
         echo -e "               [fully qualified repository name],..."
         echo -e "               Configures the running container"
         echo -e "               to host the provided repo or list"
         echo -e "               of repos with root as owner."
-        echo -e "  mount        Mounts all the repositories found in"
+        echo -e "  mount        [-a]"
+        echo -e "               Mounts all the repositories found in"
         echo -e "               the host root path, automatically recovering"
+        echo -e "               from crashes and shutdowns."
+        echo -e "  mount        <fully qualified repository name>,"
+        echo -e "               [fully qualified repository name],..."
+        echo -e "               Mounts the specified repo or list of repos found in"
+        echo -e "               the host root path, automatically recovering them"
         echo -e "               from crashes and shutdowns."
         echo
         echo -e "Please note that standard cvmfs_server commands are available."
@@ -110,10 +151,6 @@ function cvmfs_server_container {
     # Option to forward commands to cvmfs_server software running inside the container
     *)  
         CVMFS_REPO_NAME="$2"
-
-        echo -e "\nThe operations will be performed on the repository $CVMFS_REPO_NAME"
-        read -p "Press ENTER key to continue, Ctrl-C to abort..."
-        echo -e "\n"
 
         docker exec -ti cvmfs-stratum0 cvmfs_server "$@"
 
