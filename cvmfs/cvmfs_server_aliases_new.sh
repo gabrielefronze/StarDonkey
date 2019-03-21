@@ -12,7 +12,7 @@ function cvmfs_server_container {
 
         echo -n "Building cvmfs stratum0 base image with name $CVMFS_CONTAINER_BASE_IMAGE_NAME... "
         docker build -t $CVMFS_CONTAINER_BASE_IMAGE_NAME . >> build.log
-        echo "DONE!"
+        echo "done"
 
         ln -sf build.log last-operation.log
         ;;
@@ -28,7 +28,7 @@ function cvmfs_server_container {
         echo -e "\t- Host cvmfs dir = $HOST_CVMFS_ROOT_DIR"
         echo -e "\t- Env file = $ENV_FILE"
         sh Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" "$CVMFS_CONTAINER_BASE_IMAGE_NAME" "$ENV_FILE" >> run.log
-        echo "DONE!"
+        echo "done"
 
         ln -sf run.log last-operation.log
         ;;
@@ -49,7 +49,7 @@ function cvmfs_server_container {
                 echo -n "Initializing $REPO_NAME repository in cvmfs-stratum0 container... "
                 docker exec -ti cvmfs-stratum0 cvmfs_server mkfs -o root "$REPO_NAME" >> initrepo.log
                 docker exec -ti cvmfs-stratum0 cvmfs_server check "$REPO_NAME" >> initrepo.log
-                echo "DONE!"
+                echo "done"
             done
 
             ln -sf initrepo.log last-operation.log
@@ -69,7 +69,7 @@ function cvmfs_server_container {
         do
             echo -n "Recovering $REPO_NAME repository in cvmfs-stratum0 container..."
             docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/restore-repo.sh "$REPO_NAME" >> recover.log
-            echo "DONE!"
+            echo "done"
         done
         
         ln -sf recover.log last-operation.log
