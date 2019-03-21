@@ -3,7 +3,7 @@ REPO_NAME="$1"
 # Recreate the httpd configuration file
 if [[ ! -f /etc/httpd/conf.d/cvmfs."$REPO_NAME".conf ]]; then
     echo "Recreating httpd configuration files for $REPO_NAME"
-    cp /etc/cvmfs-scripts/cvmfs.dummy.conf /etc/httpd/conf.d/cvmfs."$REPO_NAME".conf
+    cp /etc/cvmfs-scripts/cvmfs-httpd-conf.template /etc/httpd/conf.d/cvmfs."$REPO_NAME".conf
     sed -i "s/DUMMY_REPLACE_ME/${REPO_NAME}/g" /etc/httpd/conf.d/cvmfs."$REPO_NAME".conf
     systemctl restart httpd
 fi
@@ -17,7 +17,7 @@ countFound=`grep -c "${REPO_NAME}" /etc/fstab`
 
 if [[ "$countFound" == 0 ]]; then
     echo "Recreating fstab entries for $REPO_NAME"
-    cp /etc/cvmfs-scripts/dummy-fstab /etc/"$REPO_NAME"-fstab
+    cp /etc/cvmfs-scripts/cvmfs-fstab.template /etc/"$REPO_NAME"-fstab
     sed -i "s/DUMMY_REPLACE_ME/${REPO_NAME}/g" /etc/"$REPO_NAME"-fstab
     (cat /etc/"$REPO_NAME"-fstab; echo) >> /etc/fstab
     rm -f /etc/"$REPO_NAME"-fstab

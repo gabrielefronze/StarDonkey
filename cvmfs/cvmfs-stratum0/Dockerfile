@@ -25,8 +25,8 @@ COPY restore-kill-start.sh /etc/cvmfs-scripts
 COPY restore-prune-start.sh /etc/cvmfs-scripts
 COPY restore-repo.sh /etc/cvmfs-scripts
 COPY stratum0-init.sh /etc/cvmfs-scripts
-COPY cvmfs.dummy.conf /etc/cvmfs-scripts
-COPY dummy-fstab /etc/cvmfs-scripts
+COPY cvmfs-httpd-conf.template /etc/cvmfs-scripts
+COPY cvmfs-fstab.template /etc/cvmfs-scripts
 RUN chmod +x /etc/cvmfs-scripts/stratum0-init.sh
 RUN chmod +x /etc/cvmfs-scripts/restore-kill-start.sh
 RUN chmod +x /etc/cvmfs-scripts/restore-prune-start.sh
