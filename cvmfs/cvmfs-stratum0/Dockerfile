@@ -1,3 +1,9 @@
+# This file is subject to the terms and conditions defined by
+# the Creative Commons BY-NC-CC standard and was developed by
+# Gabriele Gaetano Fronzé and Sara Vallero.
+# For abuse reports and other communications write to 
+# <gabriele.fronze at to.infn.it>
+
 FROM centos/systemd
 
 MAINTAINER Gabriele Gaetano Fronzé "gfronze@cern.ch"
