@@ -1,4 +1,4 @@
-FROM slidspitfire/cvmfs-stratum0-latest:latest
+FROM slidspitfire/cvmfs-stratum0-base:latest
 
 USER root
 ENV USER root
