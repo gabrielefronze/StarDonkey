@@ -83,13 +83,22 @@ function cvmfs_server_container {
 
     # Help option
     help)   
-        echo -e "usage: cvmfs_server_container <command> [<args>]\n\n"
-        echo "The most commonly used cvmfs_server_container commands are:"
-        echo -e "\t- cvmfs_server_container build : build the base container image for stratum0"
-        echo -e "\t- cvmfs_server_container run [output_image_name] [host_cvmfs_root_dir] [env_file]: build the base container image for stratum0"
-        echo -e "\t- cvmfs_server_container initrepo <repo_name1>,[repo_name2,...] : configure the running container to host the list of repos and commit the configured container image"
-        echo -e "\t- cvmfs_server_container recover <repo_name1>,[repo_name2,...] : recovers the provided repositories in a container that has been killed and restarted"
-        echo -e "\t- cvmfs_server_container regenerate <repo_name1>,[repo_name2,...] : recovers existing repos' data in a new container instance (e.g. after a 'docker container prune')"
+        echo -e "CernVM-FS Container Server Tool\n"
+        echo -e "Usage: cvmfs_server_container COMMAND [options] <parameters>\n"
+        echo -e "Supported commands:\n"
+        echo -e "  build        Build the stratum0 container image"
+        echo -e "  run          Runs the stratum0 container as cvmfs-stratum0"
+        echo -e "  mkfs         <fully qualified repository name>,"
+        echo -e "               [fully qualified repository name],..."
+        echo -e "               Configures the running container"
+        echo -e "               to host the provided repo or list"
+        echo -e "               of repos with root as owner."
+        echo -e "  mount        Mounts all the repositories found in"
+        echo -e "               the host root path, automatically recovering"
+        echo -e "               from crashes and shutdowns."
+        echo
+        echo -e "Please note that standard cvmfs_server commands are available."
+        echo -e "________________________________________________________________________\n"
         ;;
     
     # Option to forward commands to cvmfs_server software running inside the container
@@ -100,7 +109,7 @@ function cvmfs_server_container {
         read -p "Press ENTER key to continue, Ctrl-C to abort..."
         echo -e "\n"
 
-        docker exec -ti cvmfs-stratum0 cvmfs_server $@
+        docker exec -ti cvmfs-stratum0 cvmfs_server "$@"
 
         if [[ "$1" == "transaction" ]]; then
             mount -o remount,rw overlay_"$CVMFS_REPO_NAME"
