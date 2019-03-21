@@ -13,7 +13,7 @@ mkdir -p "$CVMFS_ROOT_DIR"/srv-cvmfs
 mkdir -p "$CVMFS_ROOT_DIR"/etc-cvmfs
 
 docker run -d \
--p 8000:8000 \
+-p 80:80 -p 8000:8000 \
 --name cvmfs-stratum0 \
 --hostname cvmfs-stratum0 \
 --privileged \

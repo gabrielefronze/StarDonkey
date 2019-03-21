@@ -21,7 +21,7 @@ RUN echo "CVMFS_HTTP_PROXY=DIRECT" > /etc/cvmfs/default.local
 
 RUN systemctl enable httpd.service
 RUN sed '/Listen 80/ a Listen 8000' -i /etc/httpd/conf/httpd.conf
-# EXPOSE 80
+EXPOSE 80
 EXPOSE 8000
 
 RUN mkdir /etc/cvmfs-scripts
