@@ -6,7 +6,6 @@
 
 CVMFS_ROOT_DIR="$1"
 CVMFS_CONTAINER_IMAGE_NAME="$2"
-ENV_FILE="$3"
 
 mkdir -p "$CVMFS_ROOT_DIR"/var-spool-cvmfs
 mkdir -p "$CVMFS_ROOT_DIR"/cvmfs
@@ -18,7 +17,6 @@ docker run -d \
 --name cvmfs-stratum0 \
 --hostname cvmfs-stratum0 \
 --privileged \
---env-file "$ENV_FILE" \
 --mount type=bind,source="$CVMFS_ROOT_DIR"/var-spool-cvmfs,target=/var/spool/cvmfs,bind-propagation=rshared,consistency=consistent \
 --mount type=bind,source="$CVMFS_ROOT_DIR"/cvmfs,target=/cvmfs,bind-propagation=rshared,consistency=consistent \
 --mount type=bind,source="$CVMFS_ROOT_DIR"/srv-cvmfs,target=/srv/cvmfs,bind-propagation=rshared,consistency=consistent \

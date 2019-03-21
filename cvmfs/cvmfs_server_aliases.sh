@@ -16,13 +16,9 @@ function cvmfs_server_container {
     case "$MODE" in
     # Clone the remote git repo locally
     get)
-        rm -f get.log
-
         echo -n "Cloning git repo from $CVMFS_SERVER_GIT_URL in $CVMFS_SERVER_LOCAL_GIT_REPO... "
-        git clone "$CVMFS_SERVER_GIT_URL" "$CVMFS_SERVER_LOCAL_GIT_REPO" >> get.log
+        git clone "$CVMFS_SERVER_GIT_URL" "$CVMFS_SERVER_LOCAL_GIT_REPO"
         echo "done"
-
-        ln -sf get.log last-operation.log
         ;;
     # Option to build the base container image
     build)  
@@ -40,12 +36,10 @@ function cvmfs_server_container {
         rm -f run.log
 
         HOST_CVMFS_ROOT_DIR=${2:-/var/cvmfs-docker/stratum0}
-        ENV_FILE=${3:-../cvmfs-variables.env}
 
         echo "Running cvmfs stratum0 docker container as cvmfs-stratum0 with:"
         echo -e "\t- Host cvmfs dir = $HOST_CVMFS_ROOT_DIR"
-        echo -e "\t- Env file = $ENV_FILE"
-        sh "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs/cvmfs-stratum0/Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" "$CVMFS_CONTAINER_BASE_IMAGE_NAME" "$ENV_FILE" >> run.log
+        sh "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs/cvmfs-stratum0/Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" "$CVMFS_CONTAINER_BASE_IMAGE_NAME" >> run.log
         echo "done"
 
         ln -sf run.log last-operation.log
@@ -56,7 +50,7 @@ function cvmfs_server_container {
         rm -f initrepo.log
 
         if [[ -z "$2" ]]; then
-            echo "FATAL: no repository name provided as second argument or missing host cvmfs root directory or env file."
+            echo "FATAL: no repository name provided."
         else
             REQUIRED_REPOS="$2"
             REPO_NAME_ARRAY=$(echo $REQUIRED_REPOS | tr "," "\n")
@@ -79,7 +73,6 @@ function cvmfs_server_container {
         rm -f recover.log
 
         HOST_CVMFS_ROOT_DIR=${2:-/var/cvmfs-docker/stratum0}
-        ENV_FILE=${3:-../cvmfs-variables.env}
 
         REPO_NAME_ARRAY=$(ls $HOST_CVMFS_ROOT_DIR/srv-cvmfs/ | tr " " "\n" | sed "/info/d")
 
