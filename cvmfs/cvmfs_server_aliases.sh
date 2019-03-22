@@ -18,6 +18,7 @@ function cvmfs_server_container {
     get)
         echo -n "Cloning git repo from $CVMFS_SERVER_GIT_URL in $CVMFS_SERVER_LOCAL_GIT_REPO... "
         if [[ ! -d "$CVMFS_SERVER_LOCAL_GIT_REPO"/.git ]]; then
+            mkdir -p "$CVMFS_SERVER_LOCAL_GIT_REPO"
             git clone "$CVMFS_SERVER_GIT_URL" "$CVMFS_SERVER_LOCAL_GIT_REPO"
         else
             git pull "$CVMFS_SERVER_LOCAL_GIT_REPO"
