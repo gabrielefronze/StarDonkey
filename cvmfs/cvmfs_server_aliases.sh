@@ -17,7 +17,11 @@ function cvmfs_server_container {
     # Clone the remote git repo locally
     get)
         echo -n "Cloning git repo from $CVMFS_SERVER_GIT_URL in $CVMFS_SERVER_LOCAL_GIT_REPO... "
-        git clone "$CVMFS_SERVER_GIT_URL" "$CVMFS_SERVER_LOCAL_GIT_REPO"
+        if [[ ! -f "$CVMFS_SERVER_LOCAL_GIT_REPO"/.git ]]; then
+            git clone "$CVMFS_SERVER_GIT_URL" "$CVMFS_SERVER_LOCAL_GIT_REPO"
+        else
+            git pull "$CVMFS_SERVER_LOCAL_GIT_REPO"
+        fi
         echo "done"
         ;;
     # Option to build the base container image
