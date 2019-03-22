@@ -25,10 +25,8 @@ EXPOSE 8000
 
 RUN mkdir /etc/cvmfs-scripts
 COPY restore-repo.sh /etc/cvmfs-scripts
-COPY stratum0-init.sh /etc/cvmfs-scripts
 COPY cvmfs-httpd-conf.template /etc/cvmfs-scripts
 COPY cvmfs-fstab.template /etc/cvmfs-scripts
-RUN chmod +x /etc/cvmfs-scripts/stratum0-init.sh
 RUN chmod +x /etc/cvmfs-scripts/restore-repo.sh
 
 VOLUME [ “/sys/fs/cgroup” ]
