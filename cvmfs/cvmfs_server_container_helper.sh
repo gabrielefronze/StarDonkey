@@ -9,6 +9,7 @@
 export CVMFS_SERVER_GIT_URL=https://github.com/gabrielefronze/StarDonkey
 export CVMFS_SERVER_LOCAL_GIT_REPO=~/StarDonkey/
 export CVMFS_CONTAINER_BASE_IMAGE_NAME=slidspitfire/cvmfs-stratum
+export CVMFS_STRATUM_CONTAINER="dummy"
 
 function cvmfs_server_container {
     MODE=$1
@@ -63,12 +64,33 @@ function cvmfs_server_container {
 
         IMAGE_NAME="$CVMFS_CONTAINER_BASE_IMAGE_NAME""$STRATUM"-base
 
-        echo "Running cvmfs stratum$STRATUM docker container as cvmfs-stratum0 with:"
+        echo "Running cvmfs stratum$STRATUM docker container as $CVMFS_STRATUM_CONTAINER with:"
         echo -e "\t- Host cvmfs dir = $HOST_CVMFS_ROOT_DIR"
         sh "$CVMFS_SERVER_LOCAL_GIT_REPO"/cvmfs/cvmfs-stratum"$STRATUM"/Dockerrun-args.sh "$HOST_CVMFS_ROOT_DIR" "$IMAGE_NAME" >> run.log
+        CVMFS_STRATUM_CONTAINER=cvmfs-stratum"$STRATUM"
         echo "done"
 
         ln -sf run.log last-operation.log
+        ;;
+
+    # Option to switch the endpoint of CVMFS commands if both containers run locally on the same host
+    switch-str)
+        if [[ ! $CVMFS_STRATUM_CONTAINER=="dummy" ]]; then
+            if [[ $CVMFS_STRATUM_CONTAINER=="cvmfs-stratum0" ]]; then
+                echo "Switching to stratum1... done"
+                CVMFS_STRATUM_CONTAINER=="cvmfs-stratum1"
+            else if [[ $CVMFS_STRATUM_CONTAINER=="cvmfs-stratum1" ]]; then
+                echo "Switching to stratum0... done"
+                CVMFS_STRATUM_CONTAINER=="cvmfs-stratum0"
+            else
+                echo "FATAL: env variable CVMFS_STRATUM_CONTAINER=$CVMFS_STRATUM_CONTAINER does not refer to any runnign container."
+                echo "       Please manually export the name of the CVMFS cotnainer via 'export CVMFS_STRATUM_CONTAINER=<container-name>'."
+                exit 1
+            fi
+        else
+            echo "FATAL: no running CVMFS stratum containers."
+            exit 1
+        fi
         ;;
 
     # Option to initialize the required repo[s] using the internal script and committing the new image on top of the existing
@@ -85,9 +107,9 @@ function cvmfs_server_container {
 
             for REPO_NAME in $REPO_NAME_ARRAY
             do
-                echo -n "Initializing $REPO_NAME repository in cvmfs-stratum0 container... "
-                docker exec -ti cvmfs-stratum0 cvmfs_server mkfs -o root "$REPO_NAME" >> initrepo.log
-                docker exec -ti cvmfs-stratum0 cvmfs_server check "$REPO_NAME" >> initrepo.log
+                echo -n "Initializing $REPO_NAME repository in $CVMFS_STRATUM_CONTAINER container... "
+                docker exec -ti "$CVMFS_STRATUM_CONTAINER" cvmfs_server mkfs -o root "$REPO_NAME" >> initrepo.log
+                docker exec -ti "$CVMFS_STRATUM_CONTAINER" cvmfs_server check "$REPO_NAME" >> initrepo.log
                 echo "done"
             done
 
@@ -106,8 +128,8 @@ function cvmfs_server_container {
 
             for REPO_NAME in $REPO_NAME_ARRAY
             do
-                echo -n "Recovering $REPO_NAME repository in cvmfs-stratum0 container... "
-                docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/restore-repo.sh "$REPO_NAME" >> recover.log
+                echo -n "Recovering $REPO_NAME repository in $CVMFS_STRATUM_CONTAINER container... "
+                docker exec -ti "$CVMFS_STRATUM_CONTAINER" sh /etc/cvmfs-scripts/restore-repo.sh "$REPO_NAME" >> recover.log
                 echo "done"
             done
         else
@@ -117,8 +139,8 @@ function cvmfs_server_container {
 
             for REPO_NAME in $REPO_NAME_ARRAY
             do
-                echo -n "Recovering $REPO_NAME repository in cvmfs-stratum0 container... "
-                docker exec -ti cvmfs-stratum0 sh /etc/cvmfs-scripts/restore-repo.sh "$REPO_NAME" >> recover.log
+                echo -n "Recovering $REPO_NAME repository in "$CVMFS_STRATUM_CONTAINER" container... "
+                docker exec -ti "$CVMFS_STRATUM_CONTAINER" sh /etc/cvmfs-scripts/restore-repo.sh "$REPO_NAME" >> recover.log
                 echo "done"
             done
         fi
@@ -128,38 +150,44 @@ function cvmfs_server_container {
 
     # Help option
     help)   
-        echo -e "CernVM-FS Container Server Tool\n"
-        echo -e "Usage: cvmfs_server_container COMMAND [options] <parameters>\n"
-        echo -e "Supported commands:\n"
-        echo -e "  get          Clone the git repo locally"
-        echo -e "  build        [0/1]"
-        echo -e "               Build the stratum[0/1] container image"
-        echo -e "  run          [0/1]"
-        echo -e "               Runs the stratum[0/1] container as cvmfs-stratum[0/1]"
-        echo -e "  mkfs-list    <fully qualified repository name>,"
-        echo -e "               [fully qualified repository name],..."
-        echo -e "               Configures the running container"
-        echo -e "               to host the provided repo or list"
-        echo -e "               of repos with root as owner."
-        echo -e "  mount        [-a]"
-        echo -e "               Mounts all the repositories found in"
-        echo -e "               the host root path, automatically recovering"
-        echo -e "               from crashes and shutdowns."
-        echo -e "  mount        <fully qualified repository name>,"
-        echo -e "               [fully qualified repository name],..."
-        echo -e "               Mounts the specified repo or list of repos found in"
-        echo -e "               the host root path, automatically recovering them"
-        echo -e "               from crashes and shutdowns."
+        echo "CernVM-FS Container Server Tool\n"
         echo
-        echo -e "Please note that standard cvmfs_server commands are available."
-        echo -e "________________________________________________________________________\n"
+        echo "Usage: cvmfs_server_container COMMAND [options] <parameters>\n"
+        echo
+        echo "Supported commands:\n"
+        echo
+        echo "  get          Clone the git repo locally"
+        echo "  build        [0/1]"
+        echo "               Build the stratum[0/1] container image"
+        echo "  run          [0/1]"
+        echo "               Runs the stratum[0/1] container as cvmfs-stratum[0/1]."
+        echo "  switch-str   Allows to switch between redirecting commands to "
+        echo "               stratum0 or stratum1, if deployed on the same host."
+        echo "  mkfs-list    <fully qualified repository name>,"
+        echo "               [fully qualified repository name],..."
+        echo "               Configures the running container"
+        echo "               to host the provided repo or list"
+        echo "               of repos with root as owner."
+        echo "  mount        [-a]"
+        echo "               Mounts all the repositories found in"
+        echo "               the host root path, automatically recovering"
+        echo "               from crashes and shutdowns."
+        echo "  mount        <fully qualified repository name>,"
+        echo "               [fully qualified repository name],..."
+        echo "               Mounts the specified repo or list of repos,"
+        echo "               automatically recovering them from crashes,"
+        echo "               container prunes and shutdowns."
+        echo
+        docker exec -ti "$CVMFS_STRATUM_CONTAINER" cvmfs_server help | awk 'NR>5'| awk '!/^NOTE:/' | awk '!/^  mount/' | awk '!/^                  Mount/' 
+        echo "________________________________________________________________________"
+        echo
         ;;
     
     # Option to forward commands to cvmfs_server software running inside the container
     *)  
         CVMFS_REPO_NAME="$2"
 
-        docker exec -ti cvmfs-stratum0 cvmfs_server "$@"
+        docker exec -ti "$CVMFS_STRATUM_CONTAINER" cvmfs_server "$@"
 
         if [[ "$1" == "transaction" ]]; then
             mount -o remount,rw overlay_"$CVMFS_REPO_NAME"
