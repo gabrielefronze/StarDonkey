@@ -10,6 +10,7 @@ export CVMFS_SERVER_GIT_URL=https://github.com/gabrielefronze/StarDonkey
 export CVMFS_SERVER_LOCAL_GIT_REPO=~/StarDonkey/
 export CVMFS_CONTAINER_BASE_IMAGE_NAME=slidspitfire/cvmfs-stratum
 export CVMFS_STRATUM_CONTAINER="dummy"
+export DEFAULT_HOST_CVMFS_ROOT_DIR=/var/cvmfs-docker/stratum0
 
 function cvmfs_server_container {
     MODE=$1
@@ -52,7 +53,7 @@ function cvmfs_server_container {
     run)    
         rm -f run.log
 
-        HOST_CVMFS_ROOT_DIR=${3:-/var/cvmfs-docker/stratum0}
+        HOST_CVMFS_ROOT_DIR=${3:-"$DEFAULT_HOST_CVMFS_ROOT_DIR"}
         STRATUM="dummy"
 
         if [[ ( ! -z $2 ) && ( "$2"==0 || "$2"==1 )]]; then
@@ -122,7 +123,7 @@ function cvmfs_server_container {
         rm -f recover.log
 
         if [[ "$2" == "-a" || -z "$2" ]]; then
-            HOST_CVMFS_ROOT_DIR=${3:-/var/cvmfs-docker/stratum0}
+            HOST_CVMFS_ROOT_DIR=${3:-"$DEFAULT_HOST_CVMFS_ROOT_DIR"}
 
             REPO_NAME_ARRAY=$(ls $HOST_CVMFS_ROOT_DIR/srv-cvmfs/ | tr " " "\n" | sed "/info/d")
 
