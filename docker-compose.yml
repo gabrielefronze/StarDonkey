@@ -9,6 +9,10 @@
 
 version: "2"
 services:
+  ubuntu:
+    image: ubuntu
+    container_name: ubuntu
+
   rucio-client:
       build:
         context: ./rucio-client
