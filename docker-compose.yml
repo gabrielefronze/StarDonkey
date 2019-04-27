@@ -13,6 +13,12 @@ services:
     image: ubuntu
     container_name: ubuntu
     tty: true
+    networks:
+      - rucionetwork
+    extra_hosts:
+      - "rucio-db:172.24.0.9"
+      - "rucio-db-streamer:172.24.0.7"
+      - "rucio-server:172.24.0.3"
 
   rucio-client:
       build:
