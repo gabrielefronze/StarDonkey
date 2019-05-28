@@ -53,7 +53,7 @@ services:
     build:
       context: ./rucio-server-custom-branch
       dockerfile: Dockerfile
-    image: slidspitfire/rucio-server-CB:latest
+    image: slidspitfire/rucio-server-custom-branch:latest
     container_name: rucio-server
     hostname: rucio-server
     ports:
