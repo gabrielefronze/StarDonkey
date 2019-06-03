@@ -21,52 +21,73 @@ from rucio.core.account_limit import set_account_limit
 from rucio.core.rse import add_protocol, get_rse_id, add_rse_attribute
 
 if __name__ == '__main__':
-
+    #==================================================================================
+    # create root account
     add_account('jdoe', 'USER', 'test', 'root')
 
     # gsiftp://gridftp-plain-virgo.cr.cnaf.infn.it:2811/storage/gpfs_virgo4/Runs/rucio/
-    params = {'scheme': 'gsiftp',
-              'prefix': '/storage/gpfs_virgo4/Runs/rucioTo',
-              'hostname': 'gridftp-plain-virgo.cr.cnaf.infn.it',
-              'port': 2811,
-              'impl': 'rucio.rse.protocols.gsiftp.Default',
-              'domains': {"lan": {"read": 1,
-                                  "write": 1,
-                                  "delete": 1,
-                                  "third_party_copy": 1},
-                          "wan": {"read": 1,
-                                  "write": 1,
-                                  "delete": 1,
-                                  "third_party_copy": 1}}}
+    params =   {'scheme': 'gsiftp',
+                'prefix': '/storage/gpfs_virgo4/Runs/rucioTo',
+                'hostname': 'gridftp-plain-virgo.cr.cnaf.infn.it',
+                'port': 2811,
+                'impl': 'rucio.rse.protocols.gsiftp.Default',
+                'domains': {"lan": {"read": 1,
+                                    "write": 1,
+                                    "delete": 1,
+                                    "third_party_copy": 1},
+                            "wan": {"read": 1,
+                                    "write": 1,
+                                    "delete": 1,
+                                    "third_party_copy": 1}}}
 
-    add_rse('CNAF_STORM', 'root')
-    add_protocol('CNAF_STORM', params)
-    add_rse_attribute(rse='CNAF_STORM', key='istape', value='False')
-    add_rse_attribute(rse='CNAF_STORM', key='supported_checksums', value='md5')
+    # Add RSE
+    add_rse('CNAF_GRIDFTP', 'root')
+    
+    # Setup protocol
+    add_protocol('CNAF_GRIDFTP', params)
 
+    # Setting up RSE attributes
+    add_rse_attribute(rse='CNAF_GRIDFTP', key='istape', value='False')
+    add_rse_attribute(rse='CNAF_GRIDFTP', key='supported_checksums', value='md5')
+
+    # Setup fts connection
+    add_rse_attribute(rse='CNAF_GRIDFTP', key='fts', value='fts3-devel.cern.ch:8446')
+
+    #==================================================================================
     # srm://storm-fe-archive.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/virgoplain/
-    params = {'scheme': 'srm',
-              'prefix': '/virgoplain/rucioTo',
-              'hostname': 'storm-fe-archive.cr.cnaf.infn.it',
-              'port': 8444,
-              'web-service-path': '/srm/managerv2?SFN=',
-              'impl': 'rucio.rse.protocols.gfal.Default',
-              'domains': {"lan": {"read": 1,
-                                  "write": 1,
-                                  "delete": 1,
-                                  "third_party_copy": 1},
-                          "wan": {"read": 1,
-                                  "write": 1,
-                                  "delete": 1,
-                                  "third_party_copy": 1}}}
+    params =   {'scheme': 'srm',
+                'prefix': '/virgoplain/rucioTo',
+                'hostname': 'storm-fe-archive.cr.cnaf.infn.it',
+                'port': 8444,
+                'web-service-path': '/srm/managerv2?SFN=',
+                'impl': 'rucio.rse.protocols.gfal.Default',
+                'domains': {"lan": {"read": 1,
+                                    "write": 1,
+                                    "delete": 1,
+                                    "third_party_copy": 1},
+                            "wan": {"read": 1,
+                                    "write": 1,
+                                    "delete": 1,
+                                    "third_party_copy": 1}}}
 
-    add_rse('CNAF_StoRM', 'root')
-    add_protocol('CNAF_StoRM', params)
-    add_rse_attribute(rse='CNAF_StoRM', key='istape', value='False')
-    add_rse_attribute(rse='CNAF_StoRM', key='supported_checksums', value='adler32')
+    # Add RSE
+    add_rse('CNAF_STORM', 'root')
 
-    # Now set a quota for root and jdoe on the 2 RSEs
-    set_account_limit('root', get_rse_id('SITE1_DISK'), 100000000000)
-    set_account_limit('root', get_rse_id('SITE2_DISK'), 100000000000)
-    set_account_limit('jdoe', get_rse_id('SITE1_DISK'), 1000000000)
-    set_account_limit('jdoe', get_rse_id('SITE2_DISK'), 0)
+    # Setup protocol
+    add_protocol('CNAF_STORM', params)
+
+    # Setting up RSE attributes
+    add_rse_attribute(rse='CNAF_STORM', key='istape', value='False')
+    add_rse_attribute(rse='CNAF_STORM', key='supported_checksums', value='adler32')
+
+    # Setup fts connection
+    add_rse_attribute(rse='CNAF_GRIDFTP', key='fts', value='fts3-devel.cern.ch:8446')
+
+    #==================================================================================
+    # Setting up account limits
+    set_account_limit('root', get_rse_id('CNAF_STORM'), -1)
+    set_account_limit('root', get_rse_id('CNAF_GRIDFTP'), -1)
+
+    # Setting up distances
+    add_distance('CNAF_STORM', 'CNAF_GRIDFTP', 'root', 1, 1)
+    add_distance('CNAF_GRIDFTP', 'CNAF_STORM', 'root', 1, 1)
