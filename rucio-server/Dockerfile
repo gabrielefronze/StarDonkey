@@ -53,7 +53,6 @@ RUN mkdir -p /rucio-scripts
 ADD setup_demo.sh /rucio-scripts
 ADD setup_data.py /rucio-scripts
 ADD setup_database.py /rucio-scripts
-ADD setup_CNAF.py /rucio-scripts
 ADD wait-for-it.sh /rucio-scripts
 
 WORKDIR /opt/rucio
