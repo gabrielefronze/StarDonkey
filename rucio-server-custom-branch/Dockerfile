@@ -52,10 +52,12 @@ ADD certs/server.crt /etc/grid-security/hostcert.pem
 ADD certs/server.key /etc/grid-security/hostkey.pem
 RUN chmod 400 /etc/grid-security/hostkey.pem
 
-ADD setup_demo.sh /
-ADD setup_data.py /
-ADD setup_database.py /
-ADD wait-for-it.sh /
+RUN mkdir -p /rucio-scripts
+ADD setup_demo.sh /rucio-scripts
+ADD setup_data.py /rucio-scripts
+ADD setup_database.py /rucio-scripts
+ADD setup_CNAF.py /rucio-scripts
+ADD wait-for-it.sh /rucio-scripts
 
 WORKDIR /opt/rucio
 
