@@ -12,10 +12,14 @@ FROM rucio/rucio-systemd-cc7
 
 ADD ca.repo /etc/yum.repos.d/ca.repo
 RUN pip install --upgrade setuptools
-RUN pip install rucio rucio-webui
+RUN yum install -y git
+RUN yum install -y voms-clients-cpp
+
+WORKDIR /tmp
+RUN git clone https://github.com/gabrielefronze/rucio.git && cd rucio && git checkout checksumPR
+RUN python setup.py install
 
 WORKDIR /opt
-
 ADD rucio.cfg /opt/rucio/etc/
 RUN chmod 644 /opt/rucio/etc/rucio.cfg
 ADD alembic.ini /opt/rucio/etc/
