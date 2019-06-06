@@ -62,9 +62,26 @@ services:
       - rucionetwork
     extra_hosts:
       - "rucio-db-pool:172.24.0.17"
+    volumes:
+      - /tmp/fts-voms-proxy:/tmp/fts-voms-proxy
     depends_on:
       - "rucio-db-pool"
+      - "rucio-fts-proxy-delegator"
     command: ["httpd", "-D", "FOREGROUND"]
+
+  rucio-fts-proxy-delegator:
+    build:
+      context: ./rucio-fts-proxy-delegator
+      dockerfile: Dockerfile
+    image: slidspitfire/rucio-fts-proxy-delegator:latest
+    container_name: rucio-fts-proxy-delegator
+    hostname: rucio-fts-proxy-delegator
+    networks:
+      - rucionetwork
+    volumes:
+      - ~/.globus:/root/.globus
+      - /tmp/fts-voms-proxy:/tmp/fts-voms-proxy
+    tty: true
 
   rucio-db-pool:
     build:
