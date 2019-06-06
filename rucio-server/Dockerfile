@@ -12,11 +12,9 @@ FROM rucio/rucio-systemd-cc7
 
 ADD ca.repo /etc/yum.repos.d/ca.repo
 RUN pip install --upgrade setuptools
-# RUN pip install rucio
-RUN yum install -y git
-WORKDIR /tmp
-RUN git clone https://github.com/gabrielefronze/rucio.git && cd rucio
-RUN python setup.py install
+RUN yum install -y voms-clients-cpp
+
+RUN pip install rucio
 
 WORKDIR /opt
 
