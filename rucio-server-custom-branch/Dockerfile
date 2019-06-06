@@ -17,6 +17,7 @@ RUN yum install -y voms-clients-cpp
 
 WORKDIR /tmp
 RUN git clone https://github.com/gabrielefronze/rucio.git && cd rucio && git checkout checksumPR
+WORKDIR /tmp/rucio
 RUN python setup_rucio.py install
 
 WORKDIR /opt
