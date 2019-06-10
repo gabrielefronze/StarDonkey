@@ -33,4 +33,6 @@ RUN yum install -y ca-policy-egi-core ca-policy-lcg
 RUN fetch-crl -q
 
 RUN yum install -y fts-rest fts-rest-cli
+RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+RUN python get-pip.py
 RUN pip install fts3-rest-API
