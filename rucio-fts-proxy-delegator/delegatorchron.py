@@ -1,4 +1,5 @@
 import os
+import subprocess
 import time
 from datetime import datetime, timedelta
 import calendar
@@ -11,8 +12,9 @@ month_to_number = {v: k for k,v in enumerate(calendar.month_abbr)}
 def voms_proxy_init(args = ''):
     d = dict()
 
+    proc = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
     cmd = 'voms-proxy-init '+args
-    output = os.popen(cmd).read()
+    output = proc.communicate(cmd)[0]
     if len(output)>=4:
         if len(output)==5:
             output = output[1:]
@@ -40,14 +42,31 @@ if __name__ == '__main__':
         print(proxy['expiration'])
         print(proxy['TS'])
     else:
-        print("FATAL: proxy creating failed.")
+        print("FATAL: proxy creation failed.")
 
-    os.environ["X509_USER_PROXY"] = proxy['path']
     fts3_context = context = fts3.Context('https://fts3-public.cern.ch:8446', verify=True)
+    whoami = 'curl -s -E '+proxy['path']+' --cacert '+proxy['path']+' --capath /etc/grid-security/certificates https://fts3-public.cern.ch:8446/whoami'
+    proc_whoami = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    delegation_ID = json.loads(proc_whoami.communicate(whoami)[0])['delegation_id']
 
-    delegation_ID = fts3.delegate(fts3_context, lifetime=timedelta(minutes=2), force=True)
-    print('Delegation ID = {}'.format(delegation_ID))
 
-    check_delegation = 'curl -E ${X509_USER_PROXY} --cacert ${X509_USER_PROXY} --capath /etc/grid-security/certificates https://fts3-devel.cern.ch:8446/delegation/'+delegation_ID
-    check_delegation_json = json.loads(os.popen(check_delegation).read())
-    print('Valid until {}'.format(check_delegation_json['termination_time']))
+    check_delegation = 'curl -s -E '+proxy['path']+' --cacert '+proxy['path']+' --capath /etc/grid-security/certificates https://fts3-public.cern.ch:8446/delegation/'+delegation_ID
+    proc_check = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    check_delegation_json = json.loads(proc_check.communicate(check_delegation)[0])
+
+    no_valid_delegation = False
+    termination_time = datetime()
+
+    if check_delegation_json:
+        termination_time = datetime.strptime(check_delegation_json['termination_time'].replace('T',' '),'%Y-%m-%d %H:%M:%S')
+        print('Valid until {} UTC'.format(termination_time.strftime('%H:%M:%S %Y-%m-%d')))
+    else:
+        no_valid_delegation = True
+
+    if termination_time < datetime.utcnow() or no_valid_delegation:
+        print('Renewing delegation!')
+        delegation_ID_2 = fts3.delegate(fts3_context, lifetime=timedelta(hours=12), force=True)
+        assert delegation_ID == delegation_ID_2
+        print('Delegation ID = {}'.format(delegation_ID))
+    else:
+        print('Nothing to do...')
