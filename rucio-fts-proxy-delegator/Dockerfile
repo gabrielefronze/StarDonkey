@@ -31,3 +31,6 @@ WORKDIR /root
 RUN yum install -y ca-policy-egi-core ca-policy-lcg
 
 RUN fetch-crl -q
+
+RUN yum install -y fts-rest fts-rest-cli
+RUN pip install fts3-rest-API
