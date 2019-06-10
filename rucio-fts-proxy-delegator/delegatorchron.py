@@ -3,6 +3,8 @@ import time
 from datetime import datetime, timedelta
 import calendar
 import fts3.rest.client.easy as fts3
+import fts3.rest.client.exceptions as fts3exceptions
+import json
 
 month_to_number = {v: k for k,v in enumerate(calendar.month_abbr)}
 
@@ -42,4 +44,10 @@ if __name__ == '__main__':
 
     os.environ["X509_USER_PROXY"] = proxy['path']
     fts3_context = context = fts3.Context('https://fts3-public.cern.ch:8446', verify=True)
-    delegation_ID = fts3.delegate(fts3_context, lifetime=timedelta(minutes=2), force=False)
+
+    try:
+        fts3_json = json.loads(fts3.whoami(context))
+        print('Valid delegation found with ID = {}'.format(fts3_json['delegation_id']))
+    except fts3exceptions.NeedDelegation as e:
+        delegation_ID = fts3.delegate(fts3_context, lifetime=timedelta(minutes=2), force=False)
+        print('Delegation ID = {}'.format(delegation_ID))
