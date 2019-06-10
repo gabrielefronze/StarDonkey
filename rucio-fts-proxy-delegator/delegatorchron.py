@@ -45,9 +45,9 @@ if __name__ == '__main__':
     os.environ["X509_USER_PROXY"] = proxy['path']
     fts3_context = context = fts3.Context('https://fts3-public.cern.ch:8446', verify=True)
 
-    try:
-        fts3_json = json.loads(fts3.whoami(context))
-        print('Valid delegation found with ID = {}'.format(fts3_json['delegation_id']))
-    except fts3exceptions.NeedDelegation as e:
-        delegation_ID = fts3.delegate(fts3_context, lifetime=timedelta(minutes=2), force=False)
-        print('Delegation ID = {}'.format(delegation_ID))
+    delegation_ID = fts3.delegate(fts3_context, lifetime=timedelta(minutes=2), force=True)
+    print('Delegation ID = {}'.format(delegation_ID))
+
+    check_delegation = 'curl -E ${X509_USER_PROXY} --cacert ${X509_USER_PROXY} --capath /etc/grid-security/certificates https://fts3-devel.cern.ch:8446/delegation/'+delegation_ID
+    check_delegation_json = json.loads(os.popen(check_delegation).read())
+    print('Valid until {}'.format(check_delegation_json['termination_time']))
