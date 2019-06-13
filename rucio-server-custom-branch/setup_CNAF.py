@@ -23,6 +23,9 @@ from rucio.core.rse import add_protocol, get_rse_id, add_rse_attribute
 if __name__ == '__main__':
     #==================================================================================
     # create root account
+    build_database()
+    create_root_account()
+    add_account_identity('/CN=docker client', 'x509', 'root', 'test@rucio.com', issuer="root")
     add_account('jdoe', 'USER', 'test', 'root')
 
     # gsiftp://gridftp-plain-virgo.cr.cnaf.infn.it:2811/storage/gpfs_virgo4/Runs/rucio/
