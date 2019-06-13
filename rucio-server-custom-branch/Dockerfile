@@ -15,9 +15,9 @@ RUN pip install --upgrade setuptools
 RUN yum install -y git
 RUN yum install -y voms-clients-cpp
 
-WORKDIR /tmp
+WORKDIR /usr/lib/python2.7/site-packages
 RUN git clone https://github.com/gabrielefronze/rucio.git && cd rucio && git checkout checksumPR
-WORKDIR /tmp/rucio
+WORKDIR /usr/lib/python2.7/site-packages/rucio
 RUN python setup_rucio.py install
 
 WORKDIR /opt
