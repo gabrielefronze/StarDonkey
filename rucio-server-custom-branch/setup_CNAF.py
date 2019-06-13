@@ -59,7 +59,7 @@ if __name__ == '__main__':
                 'prefix': '/virgoplain/rucioTo',
                 'hostname': 'storm-fe-archive.cr.cnaf.infn.it',
                 'port': 8444,
-                'web-service-path': '/srm/managerv2?SFN=',
+                'web_service_path': '/srm/managerv2?SFN=',
                 'impl': 'rucio.rse.protocols.gfal.Default',
                 'domains': {"lan": {"read": 1,
                                     "write": 1,
