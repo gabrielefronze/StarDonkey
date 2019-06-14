@@ -47,29 +47,30 @@ def fts3_delegate(fts3_endpoint = 'https://fts3-public.cern.ch:8446'):
 
     fts3_context = context = fts3.Context(fts3_endpoint, verify=True)
     whoami = 'curl -s -E '+proxy['path']+' --cacert '+proxy['path']+' --capath /etc/grid-security/certificates '+fts3_endpoint
-    proc_whoami = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    delegation_ID = json.loads(proc_whoami.communicate(whoami)[0])['delegation_id']
-
-
-    check_delegation = 'curl -s -E '+proxy['path']+' --cacert '+proxy['path']+' --capath /etc/grid-security/certificates '+fts3_endpoint+'/delegation/'+delegation_ID
-    proc_check = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    check_delegation_json = json.loads(proc_check.communicate(check_delegation)[0])
+    proc_whoami = subprocess.Popen(whoami, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
     no_valid_delegation = False
     termination_time = datetime.utcnow()
     elapsed_threshold = timedelta(hours=1)
 
-    if check_delegation_json:
-        termination_time = datetime.strptime(check_delegation_json['termination_time'].replace('T',' '),'%Y-%m-%d %H:%M:%S')
-        print('Valid until {} UTC'.format(termination_time.strftime('%H:%M:%S %Y-%m-%d')))
-    else:
-        no_valid_delegation = True
+    try:
+        delegation_ID = json.loads(proc_whoami.communicate(whoami)[0])['delegation_id']
+        check_delegation = 'curl -s -E '+proxy['path']+' --cacert '+proxy['path']+' --capath /etc/grid-security/certificates '+fts3_endpoint+'/delegation/'+delegation_ID
+        proc_check = subprocess.Popen(check_delegation, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        check_delegation_json = json.loads(proc_check.communicate(check_delegation)[0])
+
+        if check_delegation_json:
+            termination_time = datetime.strptime(check_delegation_json['termination_time'].replace('T',' '),'%Y-%m-%d %H:%M:%S')
+            print('Valid until {} UTC'.format(termination_time.strftime('%H:%M:%S %Y-%m-%d')))
+        else:
+            no_valid_delegation = True
+    except:
+        no_valid_delegation = False
 
     if (termination_time - elapsed_threshold) < datetime.utcnow() or no_valid_delegation:
         print('Renewing delegation!')
         delegation_ID_2 = fts3.delegate(fts3_context, lifetime=timedelta(hours=12), force=True)
-        assert delegation_ID == delegation_ID_2
-        print('Delegation ID = {}'.format(delegation_ID))
+        print('Delegation ID = {}'.format(delegation_ID_2))
     else:
         print('Nothing to do...')
 
