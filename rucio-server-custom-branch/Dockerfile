@@ -10,10 +10,15 @@
 
 FROM rucio/rucio-systemd-cc7
 
+USER root
+
 ADD ca.repo /etc/yum.repos.d/ca.repo
 RUN pip install --upgrade setuptools
 RUN yum install -y git
 RUN yum install -y voms-clients-cpp
+
+RUN mkdir -p /tmp/EggCache
+RUN env PYTHON_EGG_CACHE=/tmp/EggCache
 
 WORKDIR /
 RUN git clone https://github.com/gabrielefronze/rucio.git
