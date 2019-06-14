@@ -63,6 +63,7 @@ if __name__ == '__main__':
                 'hostname': 'storm-fe-archive.cr.cnaf.infn.it',
                 'port': 8444,
                 'web_service_path': '/srm/managerv2?SFN=',
+                'extended_attributes': '',
                 'impl': 'rucio.rse.protocols.gfal.Default',
                 'domains': {"lan": {"read": 1,
                                     "write": 1,
