@@ -17,19 +17,19 @@ RUN pip install --upgrade setuptools
 RUN yum install -y git
 RUN yum install -y voms-clients-cpp
 
-# RUN mkdir -p /tmp/EggCache
-# RUN env PYTHON_EGG_CACHE=/tmp/EggCache
+RUN mkdir -p /tmp/EggCache
+RUN env PYTHON_EGG_CACHE=/tmp/EggCache
 
 WORKDIR /
 RUN git clone https://github.com/gabrielefronze/rucio.git
 WORKDIR /rucio
 RUN git checkout checksumPR
-# RUN pip install --upgrade pip
-# RUN pip install --upgrade chardet==3.0.4
-# RUN pip install --upgrade m2crypto==0.32.0
-# RUN pip install --upgrade setuptools==40.9.0
+RUN pip install --upgrade pip
+RUN pip install --upgrade chardet==3.0.4
+RUN pip install --upgrade m2crypto==0.32.0
+RUN pip install --upgrade setuptools==40.9.0
 RUN python setup.py install
-# RUN ln -s /rucio/lib/rucio /usr/lib/python2.7/site-packages/rucio
+RUN ln -s /rucio/lib/rucio /usr/lib/python2.7/site-packages/rucio
 
 WORKDIR /opt
 ADD rucio.cfg /opt/rucio/etc/
