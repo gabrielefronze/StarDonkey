@@ -24,11 +24,13 @@ WORKDIR /
 RUN git clone https://github.com/gabrielefronze/rucio.git
 WORKDIR /rucio
 RUN git checkout checksumPR
-RUN pip install --upgrade pip
-RUN pip install --upgrade chardet==3.0.4
-RUN pip install --upgrade m2crypto==0.32.0
-RUN pip install --upgrade setuptools==40.9.0
+# RUN pip install --upgrade pip
+# RUN pip install --upgrade chardet==3.0.4
+# RUN pip install --upgrade m2crypto==0.32.0
+# RUN pip install --upgrade setuptools==40.9.0
+RUN pip install -e .
 RUN python setup.py install
+RUN python setup_rucio.py install
 RUN ln -s /rucio/lib/rucio /usr/lib/python2.7/site-packages/rucio
 
 WORKDIR /opt
