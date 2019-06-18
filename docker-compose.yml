@@ -22,9 +22,9 @@ services:
 
   rucio-client:
       build:
-        context: ./rucio-client
+        context: ./rucio-client-custom-branch
         dockerfile: Dockerfile
-      image: slidspitfire/rucio-client:latest
+      image: slidspitfire/rucio-client-custom-branch:latest
       container_name: rucio-client
       hostname: rucio-client
       depends_on:
