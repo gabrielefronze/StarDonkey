@@ -31,6 +31,7 @@ RUN git clone https://github.com/rucio/rucio.git
 
 WORKDIR /tmp/rucio
 
+RUN pip install psycopg2-binary
 RUN python2.7 setup.py install
 
 WORKDIR /tmp
