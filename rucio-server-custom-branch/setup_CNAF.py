@@ -40,7 +40,7 @@ if __name__ == '__main__':
                 'prefix': '/storage/gpfs_virgo4/Runs/rucioTo',
                 'hostname': 'gridftp-plain-virgo.cr.cnaf.infn.it',
                 'port': 2811,
-                'impl': 'rucio.rse.protocols.gsiftp.Default',
+                'impl': 'rucio.rse.protocols.gfal.Default',
                 'domains': {"lan": {"read": 1,
                                     "write": 1,
                                     "delete": 1,
