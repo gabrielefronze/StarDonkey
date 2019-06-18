@@ -51,4 +51,5 @@ ADD certs/usercert.pem /opt/rucio/etc/web/usercert.pem
 
 ENV PATH $PATH:/opt/rucio/bin
 
-RUN yum install gfal2-python
+RUN yum install -y epel-release
+RUN yum install -y gfal2-python
