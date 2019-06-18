@@ -26,7 +26,14 @@ if __name__ == '__main__':
     build_database()
     create_root_account()
     add_account_identity('/CN=docker client', 'x509', 'root', 'test@rucio.com', issuer="root")
-    add_account('jdoe', 'USER', 'test', 'root')
+
+    # create gfronze account
+    add_account('gfronze', 'USER', 'test', 'root')
+
+    # create some scopes
+    add_scope('user.gfronze', 'gfronze', 'root')
+    add_scope('user.root', 'root', 'root')
+    add_scope('tests', 'root', 'root')
 
     # gsiftp://gridftp-plain-virgo.cr.cnaf.infn.it:2811/storage/gpfs_virgo4/Runs/rucio/
     params =   {'scheme': 'gsiftp',
@@ -90,6 +97,8 @@ if __name__ == '__main__':
     # Setting up account limits
     set_account_limit('root', get_rse_id('CNAF_STORM'), -1)
     set_account_limit('root', get_rse_id('CNAF_GRIDFTP'), -1)
+    set_account_limit('gfronze', get_rse_id('CNAF_STORM'), -1)
+    set_account_limit('gfronze', get_rse_id('CNAF_GRIDFTP'), -1)
 
     # Setting up distances
     add_distance('CNAF_STORM', 'CNAF_GRIDFTP', 'root', 1, 1)
