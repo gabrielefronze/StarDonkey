@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
     # gsiftp://gridftp-plain-virgo.cr.cnaf.infn.it:2811/storage/gpfs_virgo4/Runs/rucio/
     params =   {'scheme': 'gsiftp',
-                'prefix': '/storage/gpfs_virgo4/Runs/rucio.torino.test',
+                'prefix': '/storage/gpfs_virgo4/Runs/rucio/rucio.torino.test',
                 'hostname': 'gridftp-plain-virgo.cr.cnaf.infn.it',
                 'port': 2811,
                 'impl': 'rucio.rse.protocols.gfal.Default',
