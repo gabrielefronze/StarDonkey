@@ -105,7 +105,7 @@ services:
       - "rucio-db"
       - "rucio-db-streamer"
     entrypoint: /bin/bash
-    command: "python /delegatorchron.py"
+    command: ["python", "/delegatorchron.py"]
 
   rucio-db:
     build:
