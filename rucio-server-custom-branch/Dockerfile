@@ -30,6 +30,8 @@ RUN pip install -e .
 RUN python setup.py install
 RUN python setup_rucio.py install
 RUN ln -s /rucio/lib/rucio /usr/lib/python2.7/site-packages/rucio
+RUN touch /var/log/rucio/trace/trace && chown apache /var/log/rucio/trace/trace
+
 
 WORKDIR /opt
 ADD rucio.cfg /opt/rucio/etc/

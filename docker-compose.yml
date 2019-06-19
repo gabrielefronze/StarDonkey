@@ -30,8 +30,10 @@ services:
       depends_on:
         - "rucio-server"
         - "rucio-db-pool"
+      volumes:
+        - /tmp/fts-voms-proxy:/tmp/fts-voms-proxy
       networks:
-      - rucionetwork
+        - rucionetwork
       tty: true
       
   rucio-ui:
@@ -102,7 +104,8 @@ services:
     depends_on:
       - "rucio-db"
       - "rucio-db-streamer"
-    # tty: true
+    entrypoint: /bin/bash
+    command: "python /delegatorchron.py"
 
   rucio-db:
     build:
