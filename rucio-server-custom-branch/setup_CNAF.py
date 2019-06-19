@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
     # gsiftp://gridftp-plain-virgo.cr.cnaf.infn.it:2811/storage/gpfs_virgo4/Runs/rucio/
     params =   {'scheme': 'gsiftp',
-                'prefix': '/storage/gpfs_virgo4/Runs/rucioTo',
+                'prefix': '/storage/gpfs_virgo4/Runs/rucio.torino.test',
                 'hostname': 'gridftp-plain-virgo.cr.cnaf.infn.it',
                 'port': 2811,
                 'impl': 'rucio.rse.protocols.gfal.Default',
@@ -66,7 +66,7 @@ if __name__ == '__main__':
     #==================================================================================
     # srm://storm-fe-archive.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/virgoplain/
     params =   {'scheme': 'srm',
-                'prefix': '/virgoplain/rucioTo',
+                'prefix': '/virgoplain/rucio.torino.test',
                 'hostname': 'storm-fe-archive.cr.cnaf.infn.it',
                 'port': 8444,
                 'extended_attributes': {'web_service_path': '/srm/managerv2?SFN='},
