@@ -95,10 +95,10 @@ if __name__ == '__main__':
 
     #==================================================================================
     # Setting up account limits
-    set_account_limit('root', get_rse_id('CNAF_STORM'), -1)
-    set_account_limit('root', get_rse_id('CNAF_GRIDFTP'), -1)
-    set_account_limit('gfronze', get_rse_id('CNAF_STORM'), -1)
-    set_account_limit('gfronze', get_rse_id('CNAF_GRIDFTP'), -1)
+    set_account_limit('root', get_rse_id('CNAF_STORM'), 100000000000)
+    set_account_limit('root', get_rse_id('CNAF_GRIDFTP'), 100000000000)
+    set_account_limit('gfronze', get_rse_id('CNAF_STORM'), 100000000000)
+    set_account_limit('gfronze', get_rse_id('CNAF_GRIDFTP'), 0)
 
     # Setting up distances
     add_distance('CNAF_STORM', 'CNAF_GRIDFTP', 'root', 1, 1)
