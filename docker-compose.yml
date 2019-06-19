@@ -84,6 +84,8 @@ services:
       - ~/.globus:/root/.globus
       - /tmp/fts-voms-proxy:/tmp/fts-voms-proxy
     tty: true
+    entrypoint: /bin/bash
+    command: ["python", "/delegatorchron.py"]
 
   rucio-db-pool:
     build:
@@ -104,8 +106,6 @@ services:
     depends_on:
       - "rucio-db"
       - "rucio-db-streamer"
-    entrypoint: /bin/bash
-    command: ["python", "/delegatorchron.py"]
 
   rucio-db:
     build:
