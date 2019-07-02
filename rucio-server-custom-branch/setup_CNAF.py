@@ -21,20 +21,6 @@ from rucio.core.account_limit import set_account_limit
 from rucio.core.rse import add_protocol, get_rse_id, add_rse_attribute
 
 if __name__ == '__main__':
-    #==================================================================================
-    # create root account
-    build_database()
-    create_root_account()
-    add_account_identity('/CN=docker client', 'x509', 'root', 'test@rucio.com', issuer="root")
-
-    # create gfronze account
-    add_account('gfronze', 'USER', 'test', 'root')
-
-    # create some scopes
-    add_scope('user.gfronze', 'gfronze', 'root')
-    add_scope('user.root', 'root', 'root')
-    add_scope('tests', 'root', 'root')
-
     # gsiftp://gridftp-plain-virgo.cr.cnaf.infn.it:2811/storage/gpfs_virgo4/Runs/rucio/
     params =   {'scheme': 'gsiftp',
                 'prefix': '/storage/gpfs_virgo4/Runs/rucio/rucio.torino.test',
