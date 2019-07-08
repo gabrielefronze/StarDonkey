@@ -14,9 +14,9 @@ from rucio.core.account_limit import set_account_limit
 from rucio.core.rse import add_protocol, get_rse_id, add_rse_attribute
 
 if __name__ == '__main__':
-    # gsiftp://http://ccosvms0237.in2p3.fr/:2811/ccin2p3/virgo/DATA/test/
+    # gsiftp://ccosvms0237.in2p3.fr/:2811/ccin2p3/virgo/DATA/test/
     params =   {'scheme': 'gsiftp',
-                'prefix': '/ccin2p3/virgo/DATA/test/rucio.torino.test',
+                'prefix': '/tempZone/home/gfronze/rucio.torino.test',
                 'hostname': 'ccosvms0237.in2p3.fr',
                 'port': 2811,
                 'impl': 'rucio.rse.protocols.gfal.Default',
