@@ -64,7 +64,7 @@ ADD certs/server.key /etc/grid-security/hostkey.pem
 RUN chmod 400 /etc/grid-security/hostkey.pem
 
 RUN mkdir -p /rucio-scripts
-ADD setup_* /rucio-scripts
+ADD setup_* /rucio-scripts/
 ADD wait-for-it.sh /rucio-scripts
 
 WORKDIR /opt/rucio
