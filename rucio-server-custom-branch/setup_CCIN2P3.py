@@ -14,9 +14,9 @@ from rucio.core.account_limit import set_account_limit
 from rucio.core.rse import add_protocol, get_rse_id, add_rse_attribute
 
 if __name__ == '__main__':
-    # gsiftp://ccosvms0237.in2p3.fr/:2811/ccin2p3/virgo/DATA/test/
+    # gsiftp://http://ccosvms0237.in2p3.fr/:2811/ccin2p3/virgo/DATA/test/
     params =   {'scheme': 'gsiftp',
-                'prefix': '/tempZone/home/gfronze/rucio.torino.test',
+                'prefix': '/ccin2p3/virgo/DATA/test/rucio.torino.test',
                 'hostname': 'ccosvms0237.in2p3.fr',
                 'port': 2811,
                 'impl': 'rucio.rse.protocols.gfal.Default',
@@ -49,3 +49,9 @@ if __name__ == '__main__':
     # Setting up account limits
     set_account_limit('root', get_rse_id('CCIN2P3_GRIDFTP'), 100000000000)
     set_account_limit('gfronze', get_rse_id('CCIN2P3_GRIDFTP'), 10000)
+
+    # Setting up distances
+    add_distance('CCIN2P3_GRIDFTP', 'CNAF_GRIDFTP', 'root', 1, 1)
+    add_distance('CNAF_GRIDFTP', 'CCIN2P3_GRIDFTP', 'root', 1, 1)
+    add_distance('CCIN2P3_GRIDFTP', 'CNAF_STORM', 'root', 1, 1)
+    add_distance('CNAF_STORM', 'CCIN2P3_GRIDFTP', 'root', 1, 1)

@@ -23,7 +23,7 @@ from rucio.core.rse import add_protocol, get_rse_id, add_rse_attribute
 if __name__ == '__main__':
     # gsiftp://gridftp-plain-virgo.cr.cnaf.infn.it:2811/storage/gpfs_virgo4/Runs/rucio/
     params =   {'scheme': 'gsiftp',
-                'prefix': '/storage/gpfs_virgo4/Runs/rucio/rucio.torino.test',
+                'prefix': '/storage/gpfs_virgo4/rucio-dev/rucio.torino.test',
                 'hostname': 'gridftp-plain-virgo.cr.cnaf.infn.it',
                 'port': 2811,
                 'impl': 'rucio.rse.protocols.gfal.Default',

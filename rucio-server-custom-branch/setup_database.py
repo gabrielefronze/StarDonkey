@@ -17,6 +17,4 @@ from rucio.db.sqla.util import build_database, create_root_account
 
 if __name__ == '__main__':
     # Create the Database and the root account
-    # build_database()
-    create_root_account()
-    add_account_identity('/CN=docker client', 'x509', 'root', 'test@rucio.com', issuer="root")
+    build_database()
