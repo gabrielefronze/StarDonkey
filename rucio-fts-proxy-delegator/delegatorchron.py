@@ -24,10 +24,10 @@ def voms_proxy_expired(threshold = timedelta(hours=1)):
             remaining_time = timedelta(hours=time_buffer.hour, minutes=time_buffer.minute, seconds=time_buffer.second)
             if remaining_time <= threshold:
                 return True
+            else:
+                return False
         else:
             return False
-    
-    return True
 
 def voms_proxy_info(args = ''):
     d = dict()
@@ -49,14 +49,13 @@ def voms_proxy_info(args = ''):
         print(output)
     
     return d
-
 def voms_proxy_init(args = ''):
     d = dict()
 
     proc = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
     cmd = 'voms-proxy-init '+args
     output = proc.communicate(cmd)[0]
-    
+
     if len(output)>=4:
         if len(output)==5:
             output = output[1:]
@@ -89,9 +88,9 @@ def fts3_delegate(fts3_endpoint = 'https://fts3-devel.cern.ch:8446'):
         proxy = voms_proxy_init()
         if proxy:
             print("Proxy info:")
-            print("path: ".format(proxy['path']))
-            print("expiration: ".format(proxy['expiration']))
-            print("timestamp: ".format(proxy['TS']))
+            print("path: {}".format(proxy['path']))
+            print("expiration: {}".format(proxy['expiration']))
+            print("timestamp: {}".format(proxy['TS']))
         else:
             print("FATAL: proxy creation failed.")
             return
