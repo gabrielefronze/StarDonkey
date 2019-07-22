@@ -35,7 +35,7 @@ def voms_proxy_init(args = ''):
         return d
 
 
-def fts3_delegate(fts3_endpoint = 'https://fts3-public.cern.ch:8446'):
+def fts3_delegate(fts3_endpoint = 'https://fts3-devel.cern.ch:8446'):
     proxy = voms_proxy_init()
     if proxy:
         print(proxy['path'])
@@ -46,15 +46,14 @@ def fts3_delegate(fts3_endpoint = 'https://fts3-public.cern.ch:8446'):
         return
 
     fts3_context = context = fts3.Context(fts3_endpoint, verify=True)
-    whoami = 'curl -s -E '+proxy['path']+' --cacert '+proxy['path']+' --capath /etc/grid-security/certificates '+fts3_endpoint
-    proc_whoami = subprocess.Popen(whoami, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    whoami = fts3.whoami(fts3_context)
 
     no_valid_delegation = False
     termination_time = datetime.utcnow()
     elapsed_threshold = timedelta(hours=1)
 
     try:
-        delegation_ID = json.loads(proc_whoami.communicate(whoami)[0])['delegation_id']
+        delegation_ID = whoami['delegation_id']
         check_delegation = 'curl -s -E '+proxy['path']+' --cacert '+proxy['path']+' --capath /etc/grid-security/certificates '+fts3_endpoint+'/delegation/'+delegation_ID
         proc_check = subprocess.Popen(check_delegation, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         check_delegation_json = json.loads(proc_check.communicate(check_delegation)[0])
