@@ -78,6 +78,7 @@ if __name__ == '__main__':
 
     # Setup fts connection
     add_rse_attribute(rse='CNAF_GRIDFTP', key='fts', value='fts3-devel.cern.ch:8446')
+    add_rse_attribute(rse='CNAF_STORM', key='fts', value='fts3-devel.cern.ch:8446')
 
     #==================================================================================
     # Setting up account limits
