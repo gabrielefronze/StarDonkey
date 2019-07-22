@@ -19,11 +19,31 @@ def voms_proxy_expired(threshold = timedelta(hours=1)):
     else:
         output_lines = output.splitlines()
         if output_lines[6]:
-            remaining_time = datetime.strptime(output_lines[6].replace("timeleft  : ",''), '%H:%M:%S')
+            time_buffer = datetime.strptime(output_lines[6].replace("timeleft  : ",''), '%H:%M:%S')
+            remaining_time = timedelta(hours=time_buffer.hour, minutes=time_buffer.minute, seconds=time_buffer.second)
             if remaining_time <= threshold:
                 return True
         else:
             return False
+
+def voms_proxy_info(args = ''):
+    d = dict()
+
+    proc = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+    cmd = 'voms-proxy-info'+args
+    output = proc.communicate(cmd)[0]
+    if len(output)>7:
+        output_lines = output.splitlines()
+        proxy_path = output_lines[5].replace("path      :",'')
+        time_buffer = datetime.strptime(output_lines[6].replace("timeleft  : ",''), '%H:%M:%S')
+        proxy_remaining_time = timedelta(hours=time_buffer.hour, minutes=time_buffer.minute, seconds=time_buffer.second)
+
+        d['path'] = proxy_path
+        d['time_left'] = proxy_remaining_time
+    else:
+        print('FATAL: an error occurred. See below for details:')
+        print(output)
+        return d
 
 def voms_proxy_init(args = ''):
     d = dict()
@@ -71,6 +91,7 @@ def fts3_delegate(fts3_endpoint = 'https://fts3-devel.cern.ch:8446'):
             print("FATAL: proxy creation failed.")
             return
     else:
+        proxy = voms_proxy_info()
         print("INFO: proxy valid, avoiding recreation.")
 
     fts3_context = context = fts3.Context(fts3_endpoint, verify=True)
