@@ -10,6 +10,21 @@ from shutil import copy2 as cp
 
 month_to_number = {v: k for k,v in enumerate(calendar.month_abbr)}
 
+def voms_proxy_expired(threshold = timedelta(hours=1)):
+    proc = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+    cmd = 'voms-proxy-info'
+    output = proc.communicate(cmd)[0]
+    if len(output)<7:
+        return True
+    else:
+        output_lines = output.splitlines()
+        if output_lines[6]:
+            remaining_time = datetime.strptime(output_lines[6].replace("timeleft  : ",''), '%H:%M:%S')
+            if remaining_time <= threshold:
+                return True
+        else:
+            return False
+
 def voms_proxy_init(args = ''):
     d = dict()
 
@@ -37,16 +52,26 @@ def voms_proxy_init(args = ''):
         print(output)
         return d
 
+def fts3_check_delegation(delegation_ID, proxy, fts3_endpoint):
+    check_delegation = 'curl -s -E '+proxy['path']+' --cacert '+proxy['path']+' --capath /etc/grid-security/certificates '+fts3_endpoint+'/delegation/'+delegation_ID
+    proc_check = subprocess.Popen(check_delegation, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    return json.loads(proc_check.communicate(check_delegation)[0])
+
 
 def fts3_delegate(fts3_endpoint = 'https://fts3-devel.cern.ch:8446'):
-    proxy = voms_proxy_init()
-    if proxy:
-        print(proxy['path'])
-        print(proxy['expiration'])
-        print(proxy['TS'])
+    if voms_proxy_expired():
+        print("INFO: creating new proxy.")
+        proxy = voms_proxy_init()
+        if proxy:
+            print("Proxy info:")
+            print("path: ".format(proxy['path']))
+            print("expiration: ".format(proxy['expiration']))
+            print("timestamp: ".format(proxy['TS']))
+        else:
+            print("FATAL: proxy creation failed.")
+            return
     else:
-        print("FATAL: proxy creation failed.")
-        return
+        print("INFO: proxy valid, avoiding recreation.")
 
     fts3_context = context = fts3.Context(fts3_endpoint, verify=True)
     whoami = fts3.whoami(fts3_context)
@@ -57,24 +82,25 @@ def fts3_delegate(fts3_endpoint = 'https://fts3-devel.cern.ch:8446'):
 
     try:
         delegation_ID = whoami['delegation_id']
-        check_delegation = 'curl -s -E '+proxy['path']+' --cacert '+proxy['path']+' --capath /etc/grid-security/certificates '+fts3_endpoint+'/delegation/'+delegation_ID
-        proc_check = subprocess.Popen(check_delegation, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-        check_delegation_json = json.loads(proc_check.communicate(check_delegation)[0])
+        check_delegation_json = fts3_check_delegation(delegation_ID, proxy, fts3_endpoint)
 
         if check_delegation_json:
             termination_time = datetime.strptime(check_delegation_json['termination_time'].replace('T',' '),'%Y-%m-%d %H:%M:%S')
-            print('Valid until {} UTC'.format(termination_time.strftime('%H:%M:%S %Y-%m-%d')))
+            print('INFO: Delegation valid until {} UTC'.format(termination_time.strftime('%H:%M:%S %Y-%m-%d')))
         else:
             no_valid_delegation = True
     except:
         no_valid_delegation = False
 
+    if no_valid_delegation:
+        print("INFO: no valid delegation found")
+
     if (termination_time - elapsed_threshold) < datetime.utcnow() or no_valid_delegation:
-        print('Renewing delegation!')
+        print('INFO: Renewing delegation!')
         delegation_ID_2 = fts3.delegate(fts3_context, lifetime=timedelta(hours=12), force=True)
-        print('Delegation ID = {}'.format(delegation_ID_2))
+        print('INFO: New delegation ID = {}'.format(delegation_ID_2))
     else:
-        print('Nothing to do...')
+        print('INFO: Nothing to do...')
 
 if __name__ == '__main__':
     fts3_delegate()
