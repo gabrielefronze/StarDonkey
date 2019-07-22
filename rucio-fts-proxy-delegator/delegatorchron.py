@@ -6,6 +6,7 @@ import calendar
 import fts3.rest.client.easy as fts3
 import fts3.rest.client.exceptions as fts3exceptions
 import json
+from shutil import copy2 as cp
 
 month_to_number = {v: k for k,v in enumerate(calendar.month_abbr)}
 
@@ -27,6 +28,8 @@ def voms_proxy_init(args = ''):
         d['path'] = proxy_path
         d['expiration'] = proxy_expiration_datetime
         d['TS'] = proxy_expiration_timestamp
+
+        cp(proxy_path, '/tmp/fts-voms-proxy')
 
         return d
     else:
