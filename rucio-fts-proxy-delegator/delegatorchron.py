@@ -14,6 +14,7 @@ def voms_proxy_expired(threshold = timedelta(hours=1)):
     proc = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
     cmd = 'voms-proxy-info'
     output = proc.communicate(cmd)[0]
+
     if len(output)<7:
         return True
     else:
@@ -25,6 +26,8 @@ def voms_proxy_expired(threshold = timedelta(hours=1)):
                 return True
         else:
             return False
+    
+    return True
 
 def voms_proxy_info(args = ''):
     d = dict()
@@ -32,6 +35,7 @@ def voms_proxy_info(args = ''):
     proc = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
     cmd = 'voms-proxy-info'+args
     output = proc.communicate(cmd)[0]
+
     if len(output)>7:
         output_lines = output.splitlines()
         proxy_path = output_lines[5].replace("path      :",'')
@@ -43,7 +47,8 @@ def voms_proxy_info(args = ''):
     else:
         print('FATAL: an error occurred. See below for details:')
         print(output)
-        return d
+    
+    return d
 
 def voms_proxy_init(args = ''):
     d = dict()
@@ -51,6 +56,7 @@ def voms_proxy_init(args = ''):
     proc = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
     cmd = 'voms-proxy-init '+args
     output = proc.communicate(cmd)[0]
+    
     if len(output)>=4:
         if len(output)==5:
             output = output[1:]
@@ -65,12 +71,11 @@ def voms_proxy_init(args = ''):
         d['TS'] = proxy_expiration_timestamp
 
         cp(proxy_path, '/tmp/fts-voms-proxy')
-
-        return d
     else:
         print('FATAL: an error occurred. See below for details:')
         print(output)
-        return d
+    
+    return d
 
 def fts3_check_delegation(delegation_ID, proxy, fts3_endpoint):
     check_delegation = 'curl -s -E '+proxy['path']+' --cacert '+proxy['path']+' --capath /etc/grid-security/certificates '+fts3_endpoint+'/delegation/'+delegation_ID
