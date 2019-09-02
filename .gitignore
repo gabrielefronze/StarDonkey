@@ -1,3 +1,14 @@
 .DS_Store
 .vscode/settings.json
 rucio-fts-proxy-delegator/delegatorchron.pyc
+
+rucio-server/rucio.cfg
+rucio-server/rucio.conf
+rucio-server-custom-branch/rucio.cfg
+rucio-server-custom-branch/rucio.conf
+rucio-client/rucio.cfg
+rucio-client/rucio.conf
+rucio-client-custom-branch/rucio.cfg
+rucio-client-custom-branch/rucio.conf
+rucio-ui/rucio.cfg
+rucio-ui/rucio.conf
