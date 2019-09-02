@@ -16,7 +16,6 @@ WORKDIR /opt
 
 ADD ca.repo /etc/yum.repos.d/ca.repo
 ADD rucio.cfg /opt/rucio/etc/
-RUN chmod 644 /opt/rucio/etc/rucio.cfg
 
 WORKDIR /tmp
 
@@ -47,5 +46,7 @@ RUN chmod 777 /var/log/rucio
 ADD certs/ca.pem /opt/rucio/etc/web/CERN-bundle.pem
 ADD certs/ca.pem /opt/rucio/etc/web/ca.crt
 ADD certs/usercert.pem /opt/rucio/etc/web/usercert.pem
+
+RUN chmod 644 /opt/rucio/etc/rucio.cfg
 
 ENV PATH $PATH:/opt/rucio/bin

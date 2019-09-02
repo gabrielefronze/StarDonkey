@@ -18,8 +18,6 @@ RUN pip install rucio
 
 WORKDIR /opt
 
-ADD rucio.cfg /opt/rucio/etc/
-RUN chmod 644 /opt/rucio/etc/rucio.cfg
 ADD alembic.ini /opt/rucio/etc/
 RUN chmod 644 /opt/rucio/etc/alembic.ini
 ADD aliases-py27.conf /opt/rucio/etc/web/
@@ -39,7 +37,6 @@ RUN mkdir /var/log/rucio/trace
 RUN chmod 777 /var/log/rucio
 
 ADD httpd.conf /etc/httpd/conf/httpd.conf
-ADD rucio.conf /etc/httpd/conf.d/rucio.conf
 
 ADD certs/ca.pem /opt/rucio/etc/web/CERN-bundle.pem
 ADD certs/ca.pem /opt/rucio/etc/web/ca.crt
@@ -62,3 +59,7 @@ RUN rm /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/autoindex.conf /etc/httpd/co
 EXPOSE 443
 
 ENV PATH $PATH:/opt/rucio/bin
+
+ADD rucio.cfg /opt/rucio/etc/
+RUN chmod 644 /opt/rucio/etc/rucio.cfg
+ADD rucio.conf /etc/httpd/conf.d/rucio.conf
