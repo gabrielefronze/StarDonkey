@@ -16,8 +16,8 @@ services:
     networks:
       - rucionetwork
     extra_hosts:
-      - "rucio-db:172.24.0.9"
-      - "rucio-db-streamer:172.24.0.7"
+      # - "rucio-db:172.24.0.9"
+      # - "rucio-db-streamer:172.24.0.7"
       - "rucio-server:172.24.0.3"
 
   rucio-client:
@@ -29,7 +29,7 @@ services:
       hostname: rucio-client
       depends_on:
         - "rucio-server"
-        - "rucio-db-pool"
+        # - "rucio-db-pool"
       volumes:
         - /tmp/fts-voms-proxy:/tmp/fts-voms-proxy
       networks:
@@ -45,8 +45,8 @@ services:
     hostname: rucio-ui
     ports:
       - "443:443"
-    depends_on:
-      - "rucio-db-pool"
+    # depends_on:
+    #   - "rucio-db-pool"
     networks:
       - rucionetwork
     command: ["httpd", "-D", "FOREGROUND"]
@@ -62,12 +62,14 @@ services:
       - "9443:443"
     networks:
       - rucionetwork
-    extra_hosts:
-      - "rucio-db-pool:172.24.0.17"
+    # extra_hosts:
+    #   - "rucio-db-pool:172.24.0.17"
     volumes:
       - /tmp/fts-voms-proxy:/tmp/fts-voms-proxy
     depends_on:
-      - "rucio-db-pool"
+      - "rucio-roach1"
+      - "rucio-roach2"
+      - "rucio-roach3"
       - "rucio-fts-proxy-delegator"
     command: ["httpd", "-D", "FOREGROUND"]
 
