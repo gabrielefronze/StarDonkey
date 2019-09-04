@@ -21,7 +21,7 @@ from rucio.core.account_limit import set_account_limit
 from rucio.core.rse import add_protocol, get_rse_id, add_rse_attribute
 
 if __name__ == '__main__':
-    # gsiftp://gridftp-plain-virgo.cr.cnaf.infn.it:2811/storage/gpfs_virgo4/Runs/rucio/
+    # gsiftp://gridftp-plain-virgo.cr.cnaf.infn.it:2811/storage/gpfs_virgo4/rucio-dev/rucio.torino.test
     params =   {'scheme': 'gsiftp',
                 'prefix': '/storage/gpfs_virgo4/rucio-dev/rucio.torino.test',
                 'hostname': 'gridftp-plain-virgo.cr.cnaf.infn.it',
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     add_rse_attribute(rse='CNAF_GRIDFTP', key='fts', value='fts3-devel.cern.ch:8446')
 
     #==================================================================================
-    # srm://storm-fe-archive.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/virgoplain/
+    # srm://storm-fe-archive.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/virgoplain/rucio.torino.test
     params =   {'scheme': 'srm',
                 'prefix': '/virgoplain/rucio.torino.test',
                 'hostname': 'storm-fe-archive.cr.cnaf.infn.it',
