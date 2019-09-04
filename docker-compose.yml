@@ -85,43 +85,43 @@ services:
       - /tmp/fts-voms-proxy:/tmp/fts-voms-proxy
     tty: true
 
-  rucio-db-pool:
-    build:
-      context: ./rucio-pgpool
-      dockerfile: Dockerfile
-    image: slidspitfire/rucio-db-pool:latest
-    container_name: rucio-db-pool
-    hostname: rucio-db-pool
-    ports:
-      - "5432:5433"
-    networks:
-      rucionetwork:
-        ipv4_address: 172.24.0.17
-    extra_hosts:
-      - "rucio-db:172.24.0.9"
-      - "rucio-db-streamer:172.24.0.7"
-      - "rucio-server:172.24.0.3"
-    depends_on:
-      - "rucio-db-master"
-      - "rucio-db-streamer"
+  # rucio-db-pool:
+  #   build:
+  #     context: ./rucio-pgpool
+  #     dockerfile: Dockerfile
+  #   image: slidspitfire/rucio-db-pool:latest
+  #   container_name: rucio-db-pool
+  #   hostname: rucio-db-pool
+  #   ports:
+  #     - "5432:5433"
+  #   networks:
+  #     rucionetwork:
+  #       ipv4_address: 172.24.0.17
+  #   extra_hosts:
+  #     - "rucio-db:172.24.0.9"
+  #     - "rucio-db-streamer:172.24.0.7"
+  #     - "rucio-server:172.24.0.3"
+  #   depends_on:
+  #     - "rucio-db-master"
+  #     - "rucio-db-streamer"
 
-  rucio-db-master:
-    build:
-      context: ./rucio-db-master
-      dockerfile: Dockerfile
-    image: slidspitfire/rucio-db-master:latest
-    container_name: rucio-db
-    hostname: rucio-db
-    # ports:
-    #   - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=pippo123
-    networks:
-      rucionetwork:
-        ipv4_address: 172.24.0.9
-    extra_hosts:
-      - "rucio-db-pool:172.24.0.17"
+  # rucio-db-master:
+  #   build:
+  #     context: ./rucio-db-master
+  #     dockerfile: Dockerfile
+  #   image: slidspitfire/rucio-db-master:latest
+  #   container_name: rucio-db-master
+  #   hostname: rucio-db-master
+  #   # ports:
+  #   #   - "5432:5432"
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=pippo123
+  #   networks:
+  #     rucionetwork:
+  #       ipv4_address: 172.24.0.9
+  #   extra_hosts:
+  #     - "rucio-db-pool:172.24.0.17"
 
   # rucio-db-mysql:
   #   image: mysql:5.7
@@ -137,42 +137,86 @@ services:
   #       ipv4_address: 172.24.0.77
   #   tty: true
 
-  rucio-db-streamer:
-    build:
-      context: ./rucio-db-master
-      dockerfile: Dockerfile
-    image: slidspitfire/rucio-db-master:latest
-    container_name: rucio-db-streamer
-    hostname: rucio-db-streamer
-    # ports:
-    #   - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=pippo123
-    networks:
-      rucionetwork:
-        ipv4_address: 172.24.0.7
-    extra_hosts:
-      - "rucio-db-slave:172.24.0.8"
-      - "rucio-db-pool:172.24.0.17"
+  # rucio-db-streamer:
+  #   build:
+  #     context: ./rucio-db-master
+  #     dockerfile: Dockerfile
+  #   image: slidspitfire/rucio-db-master:latest
+  #   container_name: rucio-db-streamer
+  #   hostname: rucio-db-streamer
+  #   # ports:
+  #   #   - "5432:5432"
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=pippo123
+  #   networks:
+  #     rucionetwork:
+  #       ipv4_address: 172.24.0.7
+  #   extra_hosts:
+  #     - "rucio-db-slave:172.24.0.8"
+  #     - "rucio-db-pool:172.24.0.17"
 
-  rucio-db-slave:
-    build:
-      context: ./rucio-db-slave
-      dockerfile: Dockerfile
-    image: slidspitfire/rucio-db-slave:latest
-    container_name: rucio-db-slave
-    hostname: rucio-db-slave
-    # ports:
-    #   - "54320:5432"
+  # rucio-db-slave:
+  #   build:
+  #     context: ./rucio-db-slave
+  #     dockerfile: Dockerfile
+  #   image: slidspitfire/rucio-db-slave:latest
+  #   container_name: rucio-db-slave
+  #   hostname: rucio-db-slave
+  #   # ports:
+  #   #   - "54320:5432"
+  #   networks:
+  #     rucionetwork:
+  #       ipv4_address: 172.24.0.8
+  #   extra_hosts:
+  #     - "rucio-db-streamer:172.24.0.7"
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=pippo123
+
+
+  rucio-roach1:
+    container_name: rucio-roach1
+    image: cockroachdb/cockroach:v1.1.3
+    command: start --insecure
+    ports:
+      - "26257:26257"
+      - "8080:8080"
     networks:
+      roachnet:
+        aliases:
+          - rucio-roach1
       rucionetwork:
-        ipv4_address: 172.24.0.8
-    extra_hosts:
-      - "rucio-db-streamer:172.24.0.7"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=pippo123
+        aliases:
+          - rucio-roach1
+
+  rucio-roach2:
+    container_name: rucio-roach2
+    image: cockroachdb/cockroach:v1.1.3
+    command: start --insecure --join=rucio-roach1
+    depends_on:
+      - rucio-roach1
+    networks:
+      roachnet:
+        aliases:
+          - rucio-roach2
+      rucionetwork:
+        aliases:
+          - rucio-roach2
+
+  rucio-roach3:
+    container_name: rucio-roach3
+    image: cockroachdb/cockroach:v1.1.3
+    command: start --insecure --join=rucio-roach1
+    depends_on:
+      - rucio-roach1
+    networks:
+      roachnet:
+        aliases:
+          - rucio-roach3
+      rucionetwork:
+        aliases:
+          - rucio-roach3
 
 networks:
   rucionetwork:
@@ -181,3 +225,9 @@ networks:
       config:
         - subnet: 172.24.0.0/16
           gateway: 172.24.0.1
+  roachnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 173.24.0.0/16
+          gateway: 173.24.0.1
