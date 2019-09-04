@@ -123,6 +123,18 @@ services:
     extra_hosts:
       - "rucio-db-pool:172.24.0.17"
 
+  rucio-db-mysql:
+    image: mysql
+    container_name: rucio-db-mysql
+    hostname: rucio-db-mysql
+    environment:
+      - MYSQL_USER=rucio
+      - MYSQL_PASSWORD=pippo123
+      - MYSQL_DATABASE=rucio
+    networks:
+      rucionetwork:
+        ipv4_address: 172.24.0.77
+
   rucio-db-streamer:
     build:
       context: ./rucio-db-master
