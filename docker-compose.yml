@@ -102,7 +102,7 @@ services:
       - "rucio-db-streamer:172.24.0.7"
       - "rucio-server:172.24.0.3"
     depends_on:
-      - "rucio-db"
+      - "rucio-db-master"
       - "rucio-db-streamer"
 
   rucio-db-master:
