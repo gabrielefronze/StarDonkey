@@ -124,7 +124,7 @@ services:
       - "rucio-db-pool:172.24.0.17"
 
   rucio-db-mysql:
-    image: mysql
+    image: mysql:5.7
     container_name: rucio-db-mysql
     hostname: rucio-db-mysql
     environment:
