@@ -131,6 +131,7 @@ services:
       - MYSQL_USER=rucio
       - MYSQL_PASSWORD=pippo123
       - MYSQL_DATABASE=rucio
+      - MYSQL_ROOT_PASSWORD=pippo123
     networks:
       rucionetwork:
         ipv4_address: 172.24.0.77
