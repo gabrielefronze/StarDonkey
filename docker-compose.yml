@@ -134,6 +134,7 @@ services:
     networks:
       rucionetwork:
         ipv4_address: 172.24.0.77
+    tty: true
 
   rucio-db-streamer:
     build:
