@@ -15,7 +15,6 @@ USER root
 WORKDIR /opt
 
 ADD ca.repo /etc/yum.repos.d/ca.repo
-ADD rucio.cfg /opt/rucio/etc/
 
 WORKDIR /tmp
 
@@ -48,10 +47,11 @@ ADD certs/ca.pem /opt/rucio/etc/web/CERN-bundle.pem
 ADD certs/ca.pem /opt/rucio/etc/web/ca.crt
 ADD certs/usercert.pem /opt/rucio/etc/web/usercert.pem
 
-RUN chmod 644 /opt/rucio/etc/rucio.cfg
-
 ENV PATH $PATH:/opt/rucio/bin
 
 RUN yum install -y epel-release
 RUN yum install -y gfal2-python gfal2-all
 RUN yum install -y ca-policy-egi-core ca-policy-lcg fetch-crl
+
+ADD rucio.cfg /opt/rucio/etc/
+RUN chmod 644 /opt/rucio/etc/rucio.cfg
