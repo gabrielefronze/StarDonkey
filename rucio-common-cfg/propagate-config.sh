@@ -20,12 +20,12 @@ do
     rm -rf "$FILE_PATH/rucio.cfg" "$FILE_PATH/rucio.conf"
 
     if grep -q "rucio.cfg" "$FILE_PATH/Dockerfile"; then
-        cp ./rucio.cfg "$FILE_PATH/rucio.cfg"
+        cp "$DIR/rucio.cfg" "$FILE_PATH/rucio.cfg"
         echo "               -> rucio.cfg"
     fi
     
     if grep -q "rucio.conf" "$FILE_PATH/Dockerfile"; then
-        cp ./rucio.conf "$FILE_PATH/rucio.conf"
+        cp "$DIR/rucio.conf" "$FILE_PATH/rucio.conf"
         echo "               -> rucio.conf"
     fi
 
