@@ -105,7 +105,7 @@ services:
       - "rucio-db"
       - "rucio-db-streamer"
 
-  rucio-db:
+  rucio-db-master:
     build:
       context: ./rucio-db-master
       dockerfile: Dockerfile
