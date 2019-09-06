@@ -38,16 +38,17 @@ if __name__ == '__main__':
 
     # Add RSE
     add_rse('CNAF_GRIDFTP', 'root')
+    CNAF_GRIDFTP_id = get_rse_id('CNAF_GRIDFTP')
     
     # Setup protocol
-    add_protocol('CNAF_GRIDFTP', params)
+    add_protocol(CNAF_GRIDFTP_id, params)
 
     # Setting up RSE attributes
-    add_rse_attribute(rse='CNAF_GRIDFTP', key='istape', value='False')
-    add_rse_attribute(rse='CNAF_GRIDFTP', key='supported_checksums', value='md5')
+    add_rse_attribute(CNAF_GRIDFTP_id, key='istape', value='False')
+    add_rse_attribute(CNAF_GRIDFTP_id, key='supported_checksums', value='md5')
 
     # Setup fts connection
-    add_rse_attribute(rse='CNAF_GRIDFTP', key='fts', value='fts3-pilot.cern.ch:8446')
+    add_rse_attribute(CNAF_GRIDFTP_id, key='fts', value='fts3-pilot.cern.ch:8446')
 
     #==================================================================================
     # srm://storm-fe-archive.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/virgoplain/rucio.torino.test
@@ -68,24 +69,25 @@ if __name__ == '__main__':
 
     # Add RSE
     add_rse('CNAF_STORM', 'root')
+    CNAF_STORM_id = get_rse_id('CNAF_STORM')
 
     # Setup protocol
-    add_protocol('CNAF_STORM', params)
+    add_protocol(CNAF_STORM_id, params)
 
     # Setting up RSE attributes
-    add_rse_attribute(rse='CNAF_STORM', key='istape', value='False')
-    add_rse_attribute(rse='CNAF_STORM', key='supported_checksums', value='adler32')
+    add_rse_attribute(CNAF_STORM_id, key='istape', value='False')
+    add_rse_attribute(CNAF_STORM_id, key='supported_checksums', value='adler32')
 
     # Setup fts connection
-    add_rse_attribute(rse='CNAF_GRIDFTP', key='fts', value='fts3-pilot.cern.ch:8446')
-    add_rse_attribute(rse='CNAF_STORM', key='fts', value='fts3-pilot.cern.ch:8446')
+    add_rse_attribute(CNAF_GRIDFTP_id, key='fts', value='fts3-pilot.cern.ch:8446')
+    add_rse_attribute(CNAF_STORM_id, key='fts', value='fts3-pilot.cern.ch:8446')
 
     #==================================================================================
     # Setting up account limits
-    set_account_limit('root', get_rse_id('CNAF_STORM'), 100000000000)
-    set_account_limit('root', get_rse_id('CNAF_GRIDFTP'), 100000000000)
-    set_account_limit('gfronze', get_rse_id('CNAF_STORM'), 100000000000)
-    set_account_limit('gfronze', get_rse_id('CNAF_GRIDFTP'), 0)
+    set_account_limit('root', 'CNAF_STORM', 100000000000)
+    set_account_limit('root', 'CNAF_GRIDFTP', 100000000000)
+    set_account_limit('gfronze', 'CNAF_STORM', 100000000000)
+    set_account_limit('gfronze', 'CNAF_GRIDFTP', 0)
 
     # Setting up distances
     add_distance('CNAF_STORM', 'CNAF_GRIDFTP', 'root', 1, 1)

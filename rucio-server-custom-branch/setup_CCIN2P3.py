@@ -31,24 +31,25 @@ if __name__ == '__main__':
 
     # Add RSE
     add_rse('CCIN2P3_GRIDFTP', 'root')
+    CCIN2P3_GRIDFTP_id = get_rse_id('CCIN2P3_GRIDFTP')
     
     # Setup protocol
-    add_protocol('CCIN2P3_GRIDFTP', params)
+    add_protocol(CCIN2P3_GRIDFTP_id, params)
 
     # Setting up RSE attributes
-    add_rse_attribute(rse='CCIN2P3_GRIDFTP', key='istape', value='False')
-    add_rse_attribute(rse='CCIN2P3_GRIDFTP', key='supported_checksums', value='md5')
+    add_rse_attribute(CCIN2P3_GRIDFTP_id, key='istape', value='False')
+    add_rse_attribute(CCIN2P3_GRIDFTP_id, key='supported_checksums', value='md5')
 
     # Setup fts connection
-    add_rse_attribute(rse='CCIN2P3_GRIDFTP', key='fts', value='fts3-pilot.cern.ch:8446')
+    add_rse_attribute(CCIN2P3_GRIDFTP_id, key='fts', value='fts3-pilot.cern.ch:8446')
 
     # Setup fts connection
-    add_rse_attribute(rse='CCIN2P3_GRIDFTP', key='fts', value='fts3-pilot.cern.ch:8446')
+    add_rse_attribute(CCIN2P3_GRIDFTP_id, key='fts', value='fts3-pilot.cern.ch:8446')
 
     #==================================================================================
     # Setting up account limits
-    set_account_limit('root', get_rse_id('CCIN2P3_GRIDFTP'), 100000000000)
-    set_account_limit('gfronze', get_rse_id('CCIN2P3_GRIDFTP'), 10000)
+    set_account_limit('root', CCIN2P3_GRIDFTP_id, 100000000000)
+    set_account_limit('gfronze', CCIN2P3_GRIDFTP_id, 10000)
 
     # Setting up distances
     add_distance('CCIN2P3_GRIDFTP', 'CNAF_GRIDFTP', 'root', 1, 1)
