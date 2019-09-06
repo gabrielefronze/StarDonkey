@@ -8,10 +8,10 @@ from rucio.api.account import add_account
 from rucio.api.identity import add_account_identity
 from rucio.api.scope import add_scope
 from rucio.api.did import add_did
-from rucio.api.rse import add_rse, add_distance
+from rucio.api.rse import add_distance
 from rucio.db.sqla.util import build_database, create_root_account
 from rucio.api.account_limit import set_account_limit
-from rucio.core.rse import add_protocol, get_rse_id, add_rse_attribute
+from rucio.core.rse import add_rse, add_protocol, get_rse_id, add_rse_attribute
 
 if __name__ == '__main__':
     # gsiftp://ccosvms0237.in2p3.fr:2811/tempZone/hoft_C00/rucio.torino.test
@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
     # Add RSE
     print('Adding RSE CCIN2P3_GRIDFTP...')
-    add_rse('CCIN2P3_GRIDFTP', 'root')
+    add_rse('CCIN2P3_GRIDFTP')
     CCIN2P3_GRIDFTP_id = get_rse_id('CCIN2P3_GRIDFTP')
     
     # Setup protocol

@@ -15,10 +15,10 @@ from rucio.api.account import add_account
 from rucio.api.identity import add_account_identity
 from rucio.api.scope import add_scope
 from rucio.api.did import add_did
-from rucio.api.rse import add_rse, add_distance
+from rucio.api.rse import add_distance
 from rucio.db.sqla.util import build_database, create_root_account
 from rucio.api.account_limit import set_account_limit
-from rucio.core.rse import add_protocol, get_rse_id, add_rse_attribute
+from rucio.core.rse import add_rse, add_protocol, get_rse_id, add_rse_attribute
 
 if __name__ == '__main__':
     # gsiftp://gridftp-plain-virgo.cr.cnaf.infn.it:2811/storage/gpfs_virgo4/rucio-dev/rucio.torino.test
@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     # Add RSE
     print('Adding RSE CNAF_GRIDFTP...')
-    add_rse('CNAF_GRIDFTP', 'root')
+    add_rse('CNAF_GRIDFTP')
     CNAF_GRIDFTP_id = get_rse_id('CNAF_GRIDFTP')
     
     # Setup protocol
@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
     # Add RSE
     print('Adding RSE CNAF_STORM...')
-    add_rse('CNAF_STORM', 'root')
+    add_rse('CNAF_STORM')
     CNAF_STORM_id = get_rse_id('CNAF_STORM')
 
     # Setup protocol
