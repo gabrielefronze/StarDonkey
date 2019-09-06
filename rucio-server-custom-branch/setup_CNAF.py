@@ -47,7 +47,7 @@ if __name__ == '__main__':
     add_rse_attribute(rse='CNAF_GRIDFTP', key='supported_checksums', value='md5')
 
     # Setup fts connection
-    add_rse_attribute(rse='CNAF_GRIDFTP', key='fts', value='fts3-devel.cern.ch:8446')
+    add_rse_attribute(rse='CNAF_GRIDFTP', key='fts', value='fts3-pilot.cern.ch:8446')
 
     #==================================================================================
     # srm://storm-fe-archive.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/virgoplain/rucio.torino.test
@@ -77,8 +77,8 @@ if __name__ == '__main__':
     add_rse_attribute(rse='CNAF_STORM', key='supported_checksums', value='adler32')
 
     # Setup fts connection
-    add_rse_attribute(rse='CNAF_GRIDFTP', key='fts', value='fts3-devel.cern.ch:8446')
-    add_rse_attribute(rse='CNAF_STORM', key='fts', value='fts3-devel.cern.ch:8446')
+    add_rse_attribute(rse='CNAF_GRIDFTP', key='fts', value='fts3-pilot.cern.ch:8446')
+    add_rse_attribute(rse='CNAF_STORM', key='fts', value='fts3-pilot.cern.ch:8446')
 
     #==================================================================================
     # Setting up account limits

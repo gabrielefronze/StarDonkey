@@ -40,10 +40,10 @@ if __name__ == '__main__':
     add_rse_attribute(rse='CCIN2P3_GRIDFTP', key='supported_checksums', value='md5')
 
     # Setup fts connection
-    add_rse_attribute(rse='CCIN2P3_GRIDFTP', key='fts', value='fts3-devel.cern.ch:8446')
+    add_rse_attribute(rse='CCIN2P3_GRIDFTP', key='fts', value='fts3-pilot.cern.ch:8446')
 
     # Setup fts connection
-    add_rse_attribute(rse='CCIN2P3_GRIDFTP', key='fts', value='fts3-devel.cern.ch:8446')
+    add_rse_attribute(rse='CCIN2P3_GRIDFTP', key='fts', value='fts3-pilot.cern.ch:8446')
 
     #==================================================================================
     # Setting up account limits

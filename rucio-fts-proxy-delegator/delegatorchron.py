@@ -82,7 +82,7 @@ def fts3_check_delegation(delegation_ID, proxy, fts3_endpoint):
     return json.loads(proc_check.communicate(check_delegation)[0])
 
 
-def fts3_delegate(fts3_endpoint = 'https://fts3-devel.cern.ch:8446'):
+def fts3_delegate(fts3_endpoint = 'https://fts3-pilot.cern.ch:8446'):
     if voms_proxy_expired():
         print("INFO: creating new proxy.")
         proxy = voms_proxy_init()
