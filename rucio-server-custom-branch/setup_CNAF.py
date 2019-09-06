@@ -37,18 +37,24 @@ if __name__ == '__main__':
                                     "third_party_copy": 1}}}
 
     # Add RSE
+    print('Adding RSE CNAF_GRIDFTP...')
     add_rse('CNAF_GRIDFTP', 'root')
     CNAF_GRIDFTP_id = get_rse_id('CNAF_GRIDFTP')
     
     # Setup protocol
+    print('    Adding Protocol...')
     add_protocol(CNAF_GRIDFTP_id, params)
 
     # Setting up RSE attributes
+    print('    Setting FTS server...')
     add_rse_attribute(CNAF_GRIDFTP_id, key='istape', value='False')
     add_rse_attribute(CNAF_GRIDFTP_id, key='supported_checksums', value='md5')
 
     # Setup fts connection
+    print('    Setting FTS server...')
     add_rse_attribute(CNAF_GRIDFTP_id, key='fts', value='fts3-pilot.cern.ch:8446')
+
+    print('DONE!')
 
     #==================================================================================
     # srm://storm-fe-archive.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/virgoplain/rucio.torino.test
@@ -68,27 +74,37 @@ if __name__ == '__main__':
                                     "third_party_copy": 1}}}
 
     # Add RSE
+    print('Adding RSE CNAF_STORM...')
     add_rse('CNAF_STORM', 'root')
     CNAF_STORM_id = get_rse_id('CNAF_STORM')
 
     # Setup protocol
+    print('    Adding Protocol...')
     add_protocol(CNAF_STORM_id, params)
 
     # Setting up RSE attributes
+    print('    Setting attributes...')
     add_rse_attribute(CNAF_STORM_id, key='istape', value='False')
     add_rse_attribute(CNAF_STORM_id, key='supported_checksums', value='adler32')
 
     # Setup fts connection
+    print('    Setting FTS server...')
     add_rse_attribute(CNAF_GRIDFTP_id, key='fts', value='fts3-pilot.cern.ch:8446')
     add_rse_attribute(CNAF_STORM_id, key='fts', value='fts3-pilot.cern.ch:8446')
 
+    print('DONE!')
+
     #==================================================================================
     # Setting up account limits
+    print('Setting account limits...')
     set_account_limit('root', 'CNAF_STORM', 100000000000, 'root')
     set_account_limit('root', 'CNAF_GRIDFTP', 100000000000, 'root')
     set_account_limit('gfronze', 'CNAF_STORM', 100000000000, 'root')
     set_account_limit('gfronze', 'CNAF_GRIDFTP', 0, 'root')
 
     # Setting up distances
+    print('Setting distances...')
     add_distance('CNAF_STORM', 'CNAF_GRIDFTP', 'root', 1, 1)
     add_distance('CNAF_GRIDFTP', 'CNAF_STORM', 'root', 1, 1)
+
+    print('DONE!')

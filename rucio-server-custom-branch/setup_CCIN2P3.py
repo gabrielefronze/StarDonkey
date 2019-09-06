@@ -30,29 +30,36 @@ if __name__ == '__main__':
                                     "third_party_copy": 1}}}
 
     # Add RSE
+    print('Adding RSE CCIN2P3_GRIDFTP...')
     add_rse('CCIN2P3_GRIDFTP', 'root')
     CCIN2P3_GRIDFTP_id = get_rse_id('CCIN2P3_GRIDFTP')
     
     # Setup protocol
+    print('    Adding Protocol...')
     add_protocol(CCIN2P3_GRIDFTP_id, params)
 
     # Setting up RSE attributes
+    print('    Setting attributes...')
     add_rse_attribute(CCIN2P3_GRIDFTP_id, key='istape', value='False')
     add_rse_attribute(CCIN2P3_GRIDFTP_id, key='supported_checksums', value='md5')
 
     # Setup fts connection
+    print('    Setting FTS server...')
     add_rse_attribute(CCIN2P3_GRIDFTP_id, key='fts', value='fts3-pilot.cern.ch:8446')
 
-    # Setup fts connection
-    add_rse_attribute(CCIN2P3_GRIDFTP_id, key='fts', value='fts3-pilot.cern.ch:8446')
+    print('DONE!')
 
     #==================================================================================
     # Setting up account limits
+    print('Setting account limits...')
     set_account_limit('root', 'CCIN2P3_GRIDFTP', 100000000000, 'root')
     set_account_limit('gfronze', 'CCIN2P3_GRIDFTP', 10000, 'root')
 
     # Setting up distances
+    print('Setting distances...')
     add_distance('CCIN2P3_GRIDFTP', 'CNAF_GRIDFTP', 'root', 1, 1)
     add_distance('CNAF_GRIDFTP', 'CCIN2P3_GRIDFTP', 'root', 1, 1)
     add_distance('CCIN2P3_GRIDFTP', 'CNAF_STORM', 'root', 1, 1)
     add_distance('CNAF_STORM', 'CCIN2P3_GRIDFTP', 'root', 1, 1)
+
+    print('DONE!')
