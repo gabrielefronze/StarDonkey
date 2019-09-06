@@ -17,7 +17,7 @@ from rucio.api.scope import add_scope
 from rucio.api.did import add_did
 from rucio.api.rse import add_rse, add_distance
 from rucio.db.sqla.util import build_database, create_root_account
-from rucio.core.account_limit import set_account_limit
+from rucio.api.account_limit import set_account_limit
 from rucio.core.rse import add_protocol, get_rse_id, add_rse_attribute
 
 if __name__ == '__main__':
@@ -84,10 +84,10 @@ if __name__ == '__main__':
 
     #==================================================================================
     # Setting up account limits
-    set_account_limit('root', 'CNAF_STORM', 100000000000)
-    set_account_limit('root', 'CNAF_GRIDFTP', 100000000000)
-    set_account_limit('gfronze', 'CNAF_STORM', 100000000000)
-    set_account_limit('gfronze', 'CNAF_GRIDFTP', 0)
+    set_account_limit('root', 'CNAF_STORM', 100000000000, 'root')
+    set_account_limit('root', 'CNAF_GRIDFTP', 100000000000, 'root')
+    set_account_limit('gfronze', 'CNAF_STORM', 100000000000, 'root')
+    set_account_limit('gfronze', 'CNAF_GRIDFTP', 0, 'root')
 
     # Setting up distances
     add_distance('CNAF_STORM', 'CNAF_GRIDFTP', 'root', 1, 1)
