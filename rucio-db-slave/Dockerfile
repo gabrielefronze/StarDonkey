@@ -80,7 +80,7 @@ RUN set -ex; \
 	rm -rf "$GNUPGHOME"; \
 	apt-key list
 
-ENV PG_MAJOR 10
+ENV PG_MAJOR 11
 ENV PG_VERSION 11.5-1.pgdg90+1
 
 RUN set -ex; \
