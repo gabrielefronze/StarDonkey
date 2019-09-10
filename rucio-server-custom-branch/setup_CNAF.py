@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
     # Setup fts connection
     print('    Setting FTS server...')
-    add_rse_attribute(CNAF_GRIDFTP_id, key='fts', value='fts3-pilot.cern.ch:8446')
+    add_rse_attribute(CNAF_GRIDFTP_id, key='fts', value='https://fts3-pilot.cern.ch:8446')
 
     print('DONE!')
 
@@ -89,7 +89,7 @@ if __name__ == '__main__':
 
     # Setup fts connection
     print('    Setting FTS server...')
-    add_rse_attribute(CNAF_GRIDFTP_id, key='fts', value='fts3-pilot.cern.ch:8446')
+    add_rse_attribute(CNAF_GRIDFTP_id, key='fts', value='https://fts3-pilot.cern.ch:8446')
     add_rse_attribute(CNAF_STORM_id, key='fts', value='fts3-pilot.cern.ch:8446')
 
     print('DONE!')
