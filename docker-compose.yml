@@ -85,6 +85,17 @@ services:
       - /tmp/fts-voms-proxy:/tmp/fts-voms-proxy
     tty: true
 
+  rucio-db-admin:
+    image: dpage/pgadmin4
+    container_name: rucio-db-admin
+    hostname: rucio-db-admin
+    ports:
+      - "80:80"
+    networks:
+      - rucionetwork
+    environment:
+      - PGADMIN_DEFAULT_PASSWORD=pippo123
+
   rucio-db-pool:
     build:
       context: ./rucio-pgpool
@@ -122,20 +133,6 @@ services:
         ipv4_address: 172.24.0.9
     extra_hosts:
       - "rucio-db-pool:172.24.0.17"
-
-  # rucio-db-mysql:
-  #   image: mysql:5.7
-  #   container_name: rucio-db-mysql
-  #   hostname: rucio-db-mysql
-  #   environment:
-  #     - MYSQL_USER=rucio
-  #     - MYSQL_PASSWORD=pippo123
-  #     - MYSQL_DATABASE=rucio
-  #     - MYSQL_ROOT_PASSWORD=pippo123
-  #   networks:
-  #     rucionetwork:
-  #       ipv4_address: 172.24.0.77
-  #   tty: true
 
   rucio-db-streamer:
     build:
