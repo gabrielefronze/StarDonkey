@@ -94,6 +94,7 @@ services:
     networks:
       - rucionetwork
     environment:
+      - PGADMIN_DEFAULT_EMAIL=postgres@postgres.test
       - PGADMIN_DEFAULT_PASSWORD=pippo123
 
   rucio-db-pool:
