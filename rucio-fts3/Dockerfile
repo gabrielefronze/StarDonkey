@@ -2,13 +2,14 @@
 FROM centos/systemd:latest
 
 COPY crontab /etc/crontab
-COPY supervisord.conf /etc/supervisord.conf
 COPY fts3config /etc/fts3/fts3config
 COPY fts-msg-monitoring.conf /etc/fts3/fts-msg-monitoring.conf
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN rpm -Uvh https://repo.opensciencegrid.org/osg/3.4/osg-3.4-el7-release-latest.rpm
 RUN yum install -y osg-ca-certs yum-plugin-priorities osg-gridftp fts-server fts-client fts-rest fts-monitoring fts-mysql fts-server-selinux fts-rest-selinux fts-monitoring-selinux fts-msg fts-infosys cronie crontabs supervisor
+
+COPY supervisord.conf /etc/supervisor/supervisord.conf
 
 # Installing custom gfal2 rpm with multi stream support
 RUN yum install -y wget

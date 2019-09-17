@@ -1,5 +1,18 @@
 #!/bin/bash -e
 
+mkdir -p /tmp/fts3-host-pems
+cd/tmp/fts3-host-pems
+
+openssl genrsa 2048 > hostkey.pem
+openssl req -new -x509 -nodes -sha1 -days 3650 -key hostkey.pem > hostcert.pem
+openssl x509 -noout -fingerprint -text < hostcert.pem > host.info
+cat hostcert.pem hostkey.pem > host.pem
+chmod 400 hostkey.pem host.pem
+echo ## put on your nginx virtualhost ##
+echo ssl on;
+echo ssl_certificate      ./host.pem;
+echo ssl_certificate_key  ./hostkey.pem;
+
 cp /tmp/fts3-host-pems/hostcert.pem /etc/grid-security/
 chmod 644 /etc/grid-security/hostcert.pem
 chown root:root /etc/grid-security/hostcert.pem
@@ -32,4 +45,4 @@ fetch-crl
 fts_server
 fts_bringonline
 httpd
-supervisord -c etc/supervisord.conf
+supervisord -c /etc/supervisor/supervisord.conf
