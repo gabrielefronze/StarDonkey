@@ -14,16 +14,16 @@ RUN yum install -y osg-ca-certs yum-plugin-priorities osg-gridftp fts-server fts
 RUN yum install -y wget
 RUN mkdir -p /tmp/gfal2-custom
 WORKDIR /tmp/gfal2-custom
-RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-2.16.4-r1909161131.el6.x86_64.rpm 
-RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-file-2.16.4-r1909161131.el6.x86_64.rpm
-RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-lfc-2.16.4-r1909161131.el6.x86_64.rpm
-RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-dcap-2.16.4-r1909161131.el6.x86_64.rpm
-RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-srm-2.16.4-r1909161131.el6.x86_64.rpm
-RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-rfio-2.16.4-r1909161131.el6.x86_64.rpm
-RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-gridftp-2.16.4-r1909161131.el6.x86_64.rpm
-RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-http-2.16.4-r1909161131.el6.x86_64.rpm
-RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-xrootd-2.16.4-r1909161131.el6.x86_64.rpm
-RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-sftp-2.16.4-r1909161131.el6.x86_64.rpm
+RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-2.16.4-r1909161131.el7.x86_64.rpm
+RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-file-2.16.4-r1909161131.el7.x86_64.rpm
+RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-lfc-2.16.4-r1909161131.el7.x86_64.rpm
+RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-dcap-2.16.4-r1909161131.el7.x86_64.rpm
+RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-srm-2.16.4-r1909161131.el7.x86_64.rpm
+RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-rfio-2.16.4-r1909161131.el7.x86_64.rpm
+RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-gridftp-2.16.4-r1909161131.el7.x86_64.rpm
+RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-http-2.16.4-r1909161131.el7.x86_64.rpm
+RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-xrootd-2.16.4-r1909161131.el7.x86_64.rpm
+RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-sftp-2.16.4-r1909161131.el7.x86_64.rpm
 RUN ls /tmp/gfal2-custom
 RUN yum install -y dnf
 RUN dnf install *.rpm
