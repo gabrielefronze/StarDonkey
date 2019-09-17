@@ -15,6 +15,7 @@ RUN yum install -y wget
 RUN mkdir -p /tmp/gfal2-custom
 WORKDIR /tmp/gfal2-custom
 RUN wget -r --no-parent http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64
+RUN ls /tmp/gfal2-custom
 RUN yum install -y dnf
 RUN dnf install *.rpm
 RUN yum install -y gfal2-util
