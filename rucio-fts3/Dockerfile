@@ -26,7 +26,7 @@ RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-
 RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64/gfal2-plugin-sftp-2.16.4-r1909161131.el7.x86_64.rpm
 RUN ls /tmp/gfal2-custom
 RUN yum install -y dnf
-RUN dnf install *.rpm
+RUN dnf install -y *.rpm
 RUN yum install -y gfal2-util
 
 COPY fts-diff-4.0.1.sql /usr/share/fts-mysql/fts-diff-4.0.1.sql
