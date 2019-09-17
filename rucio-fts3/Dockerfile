@@ -2,9 +2,9 @@
 FROM centos/systemd:latest
 
 COPY crontab /etc/crontab
-COPY supervisord.conf etc/supervisord.conf
-COPY fts3config etc/fts3/fts3config
-COPY fts-msg-monitoring.conf etc/fts3/fts-msg-monitoring.conf
+COPY supervisord.conf /etc/supervisord.conf
+COPY fts3config /etc/fts3/fts3config
+COPY fts-msg-monitoring.conf /etc/fts3/fts-msg-monitoring.conf
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN rpm -Uvh https://repo.opensciencegrid.org/osg/3.4/osg-3.4-el7-release-latest.rpm
@@ -30,6 +30,7 @@ RUN dnf install -y *.rpm
 RUN yum install -y gfal2-util
 
 COPY fts-diff-4.0.1.sql /usr/share/fts-mysql/fts-diff-4.0.1.sql
+
 RUN yum -y install mariadb
 EXPOSE 8446 8449
 
