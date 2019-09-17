@@ -12,13 +12,13 @@ RUN yum install -y osg-ca-certs yum-plugin-priorities osg-gridftp fts-server fts
 
 # Installing custom gfal2 rpm with multi stream support
 RUN yum install -y wget
-WORKDIR /tmp
-RUN wget http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el6/x86_64/gfal2-all-2.16.4-r1909161131.el6.x86_64.rpm
-RUN rpm -ivh gfal2-all-2.16.4-r1909161131.el6.x86_64.rpm
+RUN mkdir -p /tmp/gfal2-custom
+WORKDIR /tmp/gfal2-custom
+RUN wget -r --no-parent http://dmc-repo.web.cern.ch/dmc-repo/gridftp_streamed/el7/x86_64
+RUN dnf install *.rpm
 RUN yum install -y gfal2-util
 
 COPY fts-diff-4.0.1.sql /usr/share/fts-mysql/fts-diff-4.0.1.sql
-
 RUN yum -y install mariadb
 EXPOSE 8446 8449
 
