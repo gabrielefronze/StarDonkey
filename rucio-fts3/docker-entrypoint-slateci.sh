@@ -3,14 +3,12 @@
 mkdir -p /tmp/fts3-host-pems
 cd/tmp/fts3-host-pems
 
-openssl genrsa 2048 > hostkey.pem
-openssl req -new -x509 -nodes -sha1 -days 3650 -key hostkey.pem > hostcert.pem
-openssl x509 -noout -fingerprint -text < hostcert.pem > host.info
-cat hostcert.pem hostkey.pem > host.pem
-chmod 400 hostkey.pem host.pem
+openssl genrsa -des3 -out CA.key 4096
+openssl req -x509 -new -nodes -key CA.key -sha256 -days 1024 -out CA.crt
+openssl req -x509 -key CA.crt -keyout hostkey.pem -out hostcert.pem -days 365
 echo ## put on your nginx virtualhost ##
 echo ssl on;
-echo ssl_certificate      ./host.pem;
+echo ssl_certificate      ./hostcert.pem;
 echo ssl_certificate_key  ./hostkey.pem;
 
 cp /tmp/fts3-host-pems/hostcert.pem /etc/grid-security/
