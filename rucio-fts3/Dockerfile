@@ -5,6 +5,10 @@ COPY crontab /etc/crontab
 COPY fts3config /etc/fts3/fts3config
 COPY fts-msg-monitoring.conf /etc/fts3/fts-msg-monitoring.conf
 
+COPY rucio-fts3.crt.pem /tmp/fts3-host-pems/hostcert.pem
+COPY rucio-fts3.key.pem /tmp/fts3-host-pems/hostkey.pem
+COPY stardonkey-CA.crt /tmp/fts3-configs/ca.crt
+
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN rpm -Uvh https://repo.opensciencegrid.org/osg/3.4/osg-3.4-el7-release-latest.rpm
 RUN yum install -y osg-ca-certs yum-plugin-priorities osg-gridftp fts-server fts-client fts-rest fts-monitoring fts-mysql fts-server-selinux fts-rest-selinux fts-monitoring-selinux fts-msg fts-infosys cronie crontabs supervisor
