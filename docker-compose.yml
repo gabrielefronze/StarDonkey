@@ -51,6 +51,17 @@ services:
       - rucionetwork
     command: ["httpd", "-D", "FOREGROUND"]
 
+  rucio-fts3:
+    build:
+      context: ./rucio-fts3
+      dockerfile: Dockerfile
+    image: slidspitfire/rucio-fts3
+    container_name: rucio-fts3
+    hostname: rucio-fts3
+    networks:
+      - rucionetwork
+    tty: true
+
   rucio-server:
     build:
       context: ./rucio-server-custom-branch
