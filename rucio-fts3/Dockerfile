@@ -40,7 +40,6 @@ WORKDIR /tmp
 
 COPY fts-diff-4.0.1.sql /usr/share/fts-mysql/fts-diff-4.0.1.sql
 
-RUN yum -y install mariadb
 EXPOSE 8446 8449
 
 # Grant group write access
