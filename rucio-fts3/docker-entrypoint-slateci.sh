@@ -1,10 +1,4 @@
 #!/bin/bash -e
-
-echo ## put on your nginx virtualhost ##
-echo ssl on;
-echo ssl_certificate      /tmp/fts3-host-pems/hostcert.pem;
-echo ssl_certificate_key  /tmp/fts3-host-pems/hostkey.pem;
-
 cp /tmp/fts3-host-pems/hostcert.pem /etc/grid-security/
 chmod 644 /etc/grid-security/hostcert.pem
 chown root:root /etc/grid-security/hostcert.pem
