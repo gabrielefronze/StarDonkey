@@ -82,6 +82,8 @@ services:
     expose:
       # Opens port 3306 on the container
       - '3306'
+    networks:
+      - rucionetwork
 
   rucio-server:
     build:
