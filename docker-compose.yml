@@ -60,7 +60,28 @@ services:
     hostname: rucio-fts3
     networks:
       - rucionetwork
+    depends_on:
+      - "rucio-fts3-mysql"
     tty: true
+
+  rucio-fts3-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: 'fts3'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'fts3'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'fts3pass'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'pippo123'
+    container_name: rucio-fts3-mysql
+    hostname: rucio-fts3-mysql
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
 
   rucio-server:
     build:
