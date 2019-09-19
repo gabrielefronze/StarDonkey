@@ -36,6 +36,8 @@ RUN yum install -y dnf
 RUN dnf install -y *.rpm
 RUN yum install -y gfal2-util
 
+WORKDIR /tmp
+
 COPY fts-diff-4.0.1.sql /usr/share/fts-mysql/fts-diff-4.0.1.sql
 
 RUN yum -y install mariadb
@@ -57,5 +59,5 @@ RUN chgrp -R root /run/httpd /etc/fts3web
 RUN sed -i 's/Listen 80/#Listen 80/' /etc/httpd/conf/httpd.conf
 RUN sed -i 's/Listen 443/#Listen 443/' /etc/httpd/conf.d/ssl.conf
 
-COPY docker-entrypoint-slateci.sh tmp/docker-entrypoint.sh
-ENTRYPOINT sh tmp/docker-entrypoint.sh
+COPY docker-entrypoint-slateci.sh /tmp/docker-entrypoint.sh
+ENTRYPOINT sh /tmp/docker-entrypoint.sh
