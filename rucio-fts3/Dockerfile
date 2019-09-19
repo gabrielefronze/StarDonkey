@@ -2,9 +2,11 @@
 FROM centos/systemd:latest
 
 COPY crontab /etc/crontab
+RUN mkdir -p /etc/fts3
 COPY fts3config /etc/fts3/fts3config
 COPY fts-msg-monitoring.conf /etc/fts3/fts-msg-monitoring.conf
 
+RUN mkdir -p /tmp/fts3-host-pems
 COPY rucio-fts3.crt.pem /tmp/fts3-host-pems/hostcert.pem
 COPY rucio-fts3.key.pem /tmp/fts3-host-pems/hostkey.pem
 COPY stardonkey-CA.crt /tmp/fts3-configs/ca.crt
