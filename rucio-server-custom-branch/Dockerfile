@@ -23,7 +23,7 @@ RUN env PYTHON_EGG_CACHE=/tmp/EggCache
 WORKDIR /
 RUN git clone https://github.com/gabrielefronze/rucio.git
 WORKDIR /rucio
-RUN git checkout test
+RUN git checkout checksumPR
 RUN pip install --upgrade pip
 RUN pip install --upgrade m2crypto==0.32.0
 RUN pip install -e .
