@@ -27,9 +27,6 @@ services:
       image: slidspitfire/rucio-client-custom-branch:latest
       container_name: rucio-client
       hostname: rucio-client
-      depends_on:
-        - "rucio-server"
-        - "rucio-db-pool"
       volumes:
         - /tmp/fts-voms-proxy:/tmp/fts-voms-proxy
       networks:
