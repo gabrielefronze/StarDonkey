@@ -55,6 +55,6 @@ echo "--------------------------------------------------------------------------
 # Run rucio-conveyor-submitter daemon on rucio-server
 echo -n "Running rucio conveyor daemon... "
 docker exec rucio-server touch /var/logs/rucio/daemons/conveyor.log
-docker exec --detach rucio-server rucio-conveyor-submitter --total-threads 2 > /var/logs/rucio/daemons/conveyor.log &
+docker exec -d rucio-server sh -c 'rucio-conveyor-submitter --total-threads 2 > /var/logs/rucio/daemons/conveyor.log &'
 echo "done"
 echo "=================================================================================="
