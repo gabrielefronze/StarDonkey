@@ -46,9 +46,9 @@ echo "--------------------------------------------------------------------------
 
 # Propagate x509 proxy
 echo -n "propagating FTS proxy certificate... "
-docker exec rucio-fts-proxy-delegator cp /tmp/x509_u0 /tmp/fts-voms-proxy
-docker exec rucio-client cp /tmp/fts-voms-proxy/x509_u0 /tmp
-docker exec rucio-server cp /tmp/fts-voms-proxy/x509_u0 /tmp
+docker exec rucio-fts-proxy-delegator cp /tmp/x509up_u0 /tmp/fts-voms-proxy
+docker exec rucio-client cp /tmp/fts-voms-proxy/x509up_u0 /tmp
+docker exec rucio-server cp /tmp/fts-voms-proxy/x509up_u0 /tmp
 echo "done"
 echo "----------------------------------------------------------------------------------"
 
