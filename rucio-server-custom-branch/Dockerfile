@@ -75,3 +75,5 @@ RUN chmod 644 /opt/rucio/etc/rucio.cfg
 ADD rucio.conf /etc/httpd/conf.d/rucio.conf
 
 ENV PATH $PATH:/opt/rucio/bin
+
+RUN mkdir -p /var/logs/rucio/daemons
