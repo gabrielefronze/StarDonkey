@@ -8,9 +8,9 @@ echo "--------------------------------------------------------------------------
 
 # Propagate custom CA certificates for self signed FTS3 server connectivity
 echo -n "Propagating self signed certificates... "
-cp ./CA-stuff/rucio-fts3.crt.pem ./rucio-fts3
-cp ./CA-stuff/rucio-fts3.key.pem ./rucio-fts3
-cp ./CA-stuff/stardonkey-CA.crt ./rucio-fts3
+cp -f ./CA-stuff/rucio-fts3.crt.pem ./rucio-fts3
+cp -f ./CA-stuff/rucio-fts3.key.pem ./rucio-fts3
+cp -f ./CA-stuff/stardonkey-CA.crt ./rucio-fts3
 echo "done"
 echo "----------------------------------------------------------------------------------"
 
