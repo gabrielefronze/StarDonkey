@@ -29,7 +29,7 @@ RUN git clone https://github.com/gabrielefronze/rucio.git
 
 WORKDIR /tmp/rucio
 
-RUN git checkout test
+RUN git checkout checksumPR
 RUN pip install psycopg2-binary
 RUN python2.7 setup.py install
 
