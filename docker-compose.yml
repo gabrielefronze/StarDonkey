@@ -31,6 +31,10 @@ services:
         - /tmp/fts-voms-proxy:/tmp/fts-voms-proxy
       networks:
         - rucionetwork
+      cap_add:
+        - ALL
+      devices:
+        - "/dev/fuse"
       tty: true
       
   rucio-ui:
